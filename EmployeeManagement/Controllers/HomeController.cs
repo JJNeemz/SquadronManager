@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using EmployeeManagement.Models;
+using EmployeeManagement.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EmployeeManagement.Controllers
@@ -17,16 +19,20 @@ namespace EmployeeManagement.Controllers
             _employeeRepository = employeeRepository;
         }
 
-        public string index()
+        public ViewResult index()
         {
-            return _employeeRepository.GetEmployee(1).Name;
+            var model = _employeeRepository.GetAllEmployee();
+            return View(model);
         }
 
         public ViewResult details()
         {
-            Employee model = _employeeRepository.GetEmployee(1);
-            ViewBag.PageTitle = "Employee Details";
-            return View(model);
+            HomeDetailsViewModel homeDetailsViewModel = new HomeDetailsViewModel()
+            {
+                Employee = _employeeRepository.GetEmployee(1),
+                PageTitle = "Employee Details"
+            };
+            return View(homeDetailsViewModel);
         }
     }
 }
