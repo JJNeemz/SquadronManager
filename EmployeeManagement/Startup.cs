@@ -31,8 +31,8 @@ namespace EmployeeManagement
 
             services.AddMvc(options => options.EnableEndpointRouting = false).AddXmlSerializerFormatters();
             //The following line is saying, when someone requests the IEmployeeRepository interface,
-            //Create an instance of the MockEmployeeRepository class and inject that instance
-            services.AddSingleton<IEmployeeRepository, MockEmployeeRepository>();
+            //Create an instance of the SQLEmployeeRepository class and inject that instance
+            services.AddScoped<IEmployeeRepository, SQLEmployeeRepository>();
 
 
         }
