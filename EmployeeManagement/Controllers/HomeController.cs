@@ -41,6 +41,21 @@ namespace EmployeeManagement.Controllers
         }
 
         [HttpGet]
+        public ViewResult Edit(int id)
+        {
+            Employee employee = _employeeRepository.GetEmployee(id);
+            EmployeeEditViewModel employeeEditViewModel = new EmployeeEditViewModel
+            {
+                Id = employee.Id,
+                Name = employee.Name,
+                Department = employee.Department,
+                Email = employee.Email,
+                ExistingPhotoPath = employee.PhotoPath
+            };
+            return View(employeeEditViewModel);
+        }
+
+        [HttpGet]
         public ViewResult Create()
         {
             return View();
