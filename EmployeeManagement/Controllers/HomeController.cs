@@ -24,6 +24,25 @@ namespace EmployeeManagement.Controllers
             this.hostingEnvironrment = hostingEnvironrment;
         }
 
+        private string ProcessUploadedFile(EmployeeCreateViewModel model)
+        {
+            string uniqueFileName = null;
+            if (model.Photo != null)
+            {
+                string uploadsFolder = Path.Combine(hostingEnvironrment.WebRootPath, "images");
+                uniqueFileName = Guid.NewGuid().ToString() + "_" + model.Photo.FileName;
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                //Utilize Using statement to properly dispose of filestream
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    model.Photo.CopyTo(fileStream);
+                };
+                
+            }
+
+            return uniqueFileName;
+        }
+
         public ViewResult Index()
         {
             var model = _employeeRepository.GetAllEmployee();
@@ -55,6 +74,39 @@ namespace EmployeeManagement.Controllers
             return View(employeeEditViewModel);
         }
 
+        [HttpPost]
+        public IActionResult Edit(EmployeeEditViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                Employee employee = _employeeRepository.GetEmployee(model.Id);
+                employee.Name = model.Name;
+                employee.Department = model.Department;
+                employee.Email = model.Email;
+                if(model.Photo != null) 
+                {
+                    if(model.ExistingPhotoPath != null) 
+                    {
+                        string filePath = Path.Combine(hostingEnvironrment.WebRootPath, "images", model.ExistingPhotoPath);
+                        // Use system.IO File class to delete the existing photo
+                        System.IO.File.Delete(filePath);
+                    }
+                    // Saves the uploaded file to the images folder and returns us the unique file name
+                    employee.PhotoPath = ProcessUploadedFile(model);
+                }
+
+                // Entity framework Update method updates the respective employee record in the underlying database
+                _employeeRepository.Update(employee);
+                return RedirectToAction("index");
+            }
+            else
+            {
+                return View();
+            }
+        }
+
+
+
         [HttpGet]
         public ViewResult Create()
         {
@@ -65,14 +117,7 @@ namespace EmployeeManagement.Controllers
         {
             if (ModelState.IsValid)
             {
-                string uniqueFileName = null;
-                if(model.Photo != null)
-                {
-                    string uploadsFolder = Path.Combine(hostingEnvironrment.WebRootPath, "images");
-                    uniqueFileName = Guid.NewGuid().ToString() + "_" + model.Photo.FileName;
-                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-                    model.Photo.CopyTo(new FileStream(filePath, FileMode.Create));
-                }
+                string uniqueFileName = ProcessUploadedFile(model);
 
                 Employee newEmployee = new Employee
                 {
