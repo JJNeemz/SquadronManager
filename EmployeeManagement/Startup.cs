@@ -45,6 +45,7 @@ namespace EmployeeManagement
                 app.UseDeveloperExceptionPage();
             } else
             {
+                app.UseExceptionHandler("/Error");
                 // We can specify the URL we want to go to if there is a non successful error code.
                 // The placeholder automatically receives the error code.
                 app.UseStatusCodePagesWithReExecute("/Error/{0}");
@@ -58,10 +59,10 @@ namespace EmployeeManagement
                 routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
             });
 
-            app.Run(async (context) =>
-            {
-                await context.Response.WriteAsync("app.Run Hello World");
-            });
+            //app.Run(async (context) =>
+            //{
+            //    await context.Response.WriteAsync("app.Run Hello World");
+            //});
 
             //app.UseEndpoints(endpoints =>
             //{
