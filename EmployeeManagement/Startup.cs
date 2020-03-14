@@ -43,6 +43,11 @@ namespace EmployeeManagement
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+            } else
+            {
+                // We can specify the URL we want to go to if there is a non successful error code.
+                // The placeholder automatically receives the error code.
+                app.UseStatusCodePagesWithReExecute("/Error/{0}");
             }
 
             app.UseRouting();
