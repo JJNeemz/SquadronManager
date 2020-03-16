@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -12,6 +13,14 @@ namespace EmployeeManagement.Controllers
 {
     public class ErrorController : Controller
     {
+        private readonly ILogger<ErrorController> logger;
+
+        public ErrorController(ILogger<ErrorController> logger)
+        {
+            this.logger = logger;
+        }
+
+
         [Route("Error/{statusCode}")]
         public IActionResult HttpStatusCodeHandler(int statusCode)
         {
@@ -21,8 +30,7 @@ namespace EmployeeManagement.Controllers
             {
                 case 404:
                     ViewBag.ErrorMessage = "The resource you requested could not be found";
-                    ViewBag.Path = statusCodeResult.OriginalPath;
-                    ViewBag.QueryString = statusCodeResult.OriginalQueryString;
+                    logger.LogWarning($"404 Error Occured. Path = {statusCodeResult.OriginalPath} and QueryString = {statusCodeResult.OriginalQueryString}");
                     break;
 
             }
@@ -35,9 +43,8 @@ namespace EmployeeManagement.Controllers
         {
             // Retrieve exception details
             var exceptionDetails = HttpContext.Features.Get<IExceptionHandlerPathFeature>();
-            ViewBag.ExceptionPath = exceptionDetails.Path;
-            ViewBag.ExceptionMessage = exceptionDetails.Error.Message;
-            ViewBag.StackTrace = exceptionDetails.Error.StackTrace;
+
+            logger.LogError($"The path {exceptionDetails.Path} threw an exception {exceptionDetails.Error}");
 
             return View("Error");
         }
