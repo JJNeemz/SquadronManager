@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace EmployeeManagement.Models
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : IdentityDbContext
     {
         //Create constructor for DbContext options used for configuration information 
         public AppDbContext(DbContextOptions<AppDbContext> options): base(options)
@@ -19,6 +20,8 @@ namespace EmployeeManagement.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // Keys of identity tables are mapped on OnModelCreating method of IdentityDbContext class
+            base.OnModelCreating(modelBuilder);
             modelBuilder.Seed();
         }
     }
