@@ -5,6 +5,7 @@ using EmployeeManagement.Models;
 using EmployeeManagement.ViewModels;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace EmployeeManagement.Controllers
 {
@@ -13,15 +14,18 @@ namespace EmployeeManagement.Controllers
     {
         private readonly IEmployeeRepository _employeeRepository;
         private readonly IWebHostEnvironment hostingEnvironrment;
+        private readonly ILogger logger;
 
         //Injecting this dependency means that we do not have to manually change all controllers
         //that use this dependency if we want to change how we get our employees. All we need to do
         //is change the Startup.cs file and all controllers using the IEmployeeRepository injection
         //will inject the correct model and reflect the changes.
-        public HomeController(IEmployeeRepository employeeRepository, IWebHostEnvironment hostingEnvironrment)
+        public HomeController(IEmployeeRepository employeeRepository, IWebHostEnvironment hostingEnvironrment, ILogger<HomeController> logger)
         {
+
             _employeeRepository = employeeRepository;
             this.hostingEnvironrment = hostingEnvironrment;
+            this.logger = logger;
         }
 
         private string ProcessUploadedFile(EmployeeCreateViewModel model)
@@ -51,7 +55,6 @@ namespace EmployeeManagement.Controllers
 
         public ViewResult Details(int? id)
         {
-            throw new Exception("Error in Details View");
 
             Employee employee = _employeeRepository.GetEmployee(id.Value);
 
