@@ -33,6 +33,14 @@ namespace EmployeeManagement
             services.AddIdentity<IdentityUser, IdentityRole>()
                     .AddEntityFrameworkStores<AppDbContext>();
 
+            // Override default password options
+            services.Configure<IdentityOptions>(options =>
+            {
+                options.Password.RequiredLength = 10;
+                options.Password.RequiredUniqueChars = 3;
+                options.Password.RequireNonAlphanumeric = false;
+            });
+
             services.AddMvc(options => options.EnableEndpointRouting = false).AddXmlSerializerFormatters();
             //The following line is saying, when someone requests the IEmployeeRepository interface,
             //Create an instance of the SQLEmployeeRepository class and inject that instance

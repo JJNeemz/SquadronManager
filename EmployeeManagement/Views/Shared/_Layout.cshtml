@@ -1,5 +1,6 @@
 ﻿<!DOCTYPE html>
 
+@inject SignInManager<IdentityUser> signInManager
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
@@ -42,11 +43,28 @@
                     </li>
                 </ul>
                 @* Right Side Navigation Menu *@
-                <ul class="navbar-nav ml-auto">
+            <ul class="navbar-nav ml-auto">
+                @if (signInManager.IsSignedIn(User))
+                {
+                    <li class="nav-item">
+                        <form method="post" asp-action="logout" asp-controller="account" class="nav-link">
+                            <button type="submit" class="nav-link btn btn-link py-0 auto-width">
+                                Logout @User.Identity.Name
+                            </button>
+                        </form>
+                    </li>
+                }
+                else
+                {
                     <li class="nav-item">
                         <a asp-action="register" asp-controller="account" class="nav-link">Register</a>
                     </li>
-                </ul>
+                    <li class="nav-item">
+                        <a asp-action="login" asp-controller="account" class="nav-link">Login</a>
+                    </li>
+                }
+
+            </ul>
             </div>
         </nav>
 
