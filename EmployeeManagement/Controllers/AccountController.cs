@@ -58,12 +58,6 @@ namespace EmployeeManagement.Controllers
             return View(model);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Logout()
-        {
-            await signInManager.SignOutAsync();
-            return RedirectToAction("index", "home");
-        }
 
         [HttpGet]
         public IActionResult Login()
@@ -72,7 +66,8 @@ namespace EmployeeManagement.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(LoginViewModel model)
+        // Model binding will automatically map the query string value with the returnUrl parameter
+        public async Task<IActionResult> Login(LoginViewModel model, string returnUrl)
         {
             if (ModelState.IsValid)
             {
@@ -81,14 +76,28 @@ namespace EmployeeManagement.Controllers
                 // Redirect user if login is successful
                 if (result.Succeeded)
                 {
-                    // Set isPersistent to false -- we don't want a permanent cookie
-                    return RedirectToAction("index", "home");
+                    if (!string.IsNullOrEmpty(returnUrl))
+                    {
+                        return LocalRedirect(returnUrl);
+                    } 
+                    else
+                    {
+                        return RedirectToAction("index", "home");
+                    }
+                    
                 }
 
                 ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
 
             }
             return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Logout()
+        {
+            await signInManager.SignOutAsync();
+            return RedirectToAction("index", "home");
         }
     }
 }
