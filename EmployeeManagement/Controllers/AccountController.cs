@@ -48,6 +48,12 @@ namespace EmployeeManagement.Controllers
                 // Log in user if CreateAsync succeeds
                 if (result.Succeeded)
                 {
+                    //If admin user is already signed in, do not login to newly registered user
+                    if(signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                    {
+                        return RedirectToAction("ListUsers", "Administration");
+                    }
+
                     // Set isPersistent to false -- we don't want a permanent cookie
                     await signInManager.SignInAsync(user, isPersistent: false);
                     return RedirectToAction("index", "home");
