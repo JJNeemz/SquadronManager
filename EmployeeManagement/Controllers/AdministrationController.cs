@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace EmployeeManagement.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class AdministrationController : Controller
     {
         private readonly RoleManager<IdentityRole> roleManager;
