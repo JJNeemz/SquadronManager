@@ -23,25 +23,11 @@ namespace EmployeeManagement.Controllers
             this.signInManager = signInManager;
         }
 
+
         [HttpGet]
         public IActionResult Register()
         {
             return View();
-        }
-
-        [HttpPost][HttpGet]
-        public async Task<IActionResult> IsEmailInUse(string email)
-        {
-            var user = await userManager.FindByEmailAsync(email);
-
-            if(user == null)
-            {
-                return Json(true);
-            }
-            else
-            {
-                return Json($"Email {email} is already taken.");
-            }
         }
 
         [HttpPost]
@@ -67,12 +53,28 @@ namespace EmployeeManagement.Controllers
                     return RedirectToAction("index", "home");
                 }
                 // If CreateAsync fails, add the errors to the modelstate to be displayed on the validation summary tag helper
-                foreach(var error in result.Errors)
+                foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
             return View(model);
+        }
+
+
+        [HttpPost][HttpGet]
+        public async Task<IActionResult> IsEmailInUse(string email)
+        {
+            var user = await userManager.FindByEmailAsync(email);
+
+            if(user == null)
+            {
+                return Json(true);
+            }
+            else
+            {
+                return Json($"Email {email} is already taken.");
+            }
         }
 
 
@@ -110,11 +112,19 @@ namespace EmployeeManagement.Controllers
             return View(model);
         }
 
+
         [HttpPost]
         public async Task<IActionResult> Logout()
         {
             await signInManager.SignOutAsync();
             return RedirectToAction("index", "home");
+        }
+
+
+        [HttpGet]
+        public IActionResult AccessDenied()
+        {
+            return View();
         }
     }
 }
