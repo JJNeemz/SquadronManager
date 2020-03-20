@@ -2,6 +2,8 @@
 
 @{
     ViewBag.Title = "All Users";
+
+    // TODO: Turn #confirmDeleteDiv into a modal popup
 }
 
 <h1>All Users</h1>
@@ -25,7 +27,13 @@
             <div class="card-footer">
                 <form asp-action="DeleteUser" asp-controller="Administration" asp-route-id="@user.Id" method="post">
                     <a asp-action="EditUser" asp-controller="Administration" asp-route-id="@user.Id" class="btn btn-primary">Edit</a>
-                    <button type="submit" class="btn btn-danger">Delete</button>
+                    <span><a id="deleteSpan_@user.Id" class="btn btn-danger text-white" onclick="confirmDelete('@user.Id', true)">Delete</a></span>
+                   
+                    <div id="confirmDeleteDiv_@user.Id" style="display:none">
+                        <p>Are you sure you want to delete?</p>
+                        <button type="submit" class="btn btn-danger">Yes</button>
+                        <a class="btn btn-primary text-white" onclick="confirmDelete('@user.Id', false)">No</a>
+                    </div>
                 </form>
             </div>
         </div>
@@ -47,4 +55,9 @@ else
             </a>
         </div>
     </div>
+}
+
+
+@section Scripts {
+    <script src="~/js/CustomScript.js"></script>
 }
