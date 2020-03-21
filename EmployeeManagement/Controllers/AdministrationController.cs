@@ -36,7 +36,7 @@ namespace EmployeeManagement.Controllers
         {
             var user = await userManager.FindByIdAsync(id);
 
-            if(user == null)
+            if (user == null)
             {
                 ViewBag.ErrorMessage = $"User with Id = {id} cannot be found";
                 return View("NotFound");
@@ -80,7 +80,7 @@ namespace EmployeeManagement.Controllers
                     return RedirectToAction("ListUsers");
                 }
 
-                foreach(var error in result.Errors)
+                foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
@@ -96,7 +96,7 @@ namespace EmployeeManagement.Controllers
         {
             var user = await userManager.FindByIdAsync(id);
 
-            if(user == null)
+            if (user == null)
             {
                 ViewBag.ErrorMessage = $"User with Id = {id} cannot be found";
                 return View("NotFound");
@@ -108,7 +108,7 @@ namespace EmployeeManagement.Controllers
                 {
                     return RedirectToAction("ListUsers", "Administration");
                 }
-                
+
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError("", error.Description);
@@ -224,7 +224,7 @@ namespace EmployeeManagement.Controllers
 
             var model = new List<UserRoleViewModel>();
 
-            foreach(var user in userManager.Users.ToList())
+            foreach (var user in userManager.Users.ToList())
             {
                 var userRoleViewModel = new UserRoleViewModel
                 {
@@ -232,10 +232,10 @@ namespace EmployeeManagement.Controllers
                     UserName = user.UserName
                 };
 
-                if(await userManager.IsInRoleAsync(user, role.Name))
+                if (await userManager.IsInRoleAsync(user, role.Name))
                 {
                     userRoleViewModel.IsSelected = true;
-                } 
+                }
                 else
                 {
                     userRoleViewModel.IsSelected = false;
@@ -248,44 +248,32 @@ namespace EmployeeManagement.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditUsersInRole(List<UserRoleViewModel> model, string roleId)
+        public async Task<IActionResult> DeleteRole(string id)
         {
-            var role = await roleManager.FindByIdAsync(roleId);
+            var role = await roleManager.FindByIdAsync(id);
 
-            if(role == null)
+            if (role == null)
             {
-                ViewBag.ErrorMessage = $"Role with Id = {roleId} cannot be found";
+                ViewBag.ErrorMessage = $"Role with Id = {id} cannot be found";
                 return View("NotFound");
             }
-            
-            for(int i=0; i < model.Count; i++)
+            else
             {
-                var user = await userManager.FindByIdAsync(model[i].UserId);
-                IdentityResult result = null;
-
-                if (model[i].IsSelected && !(await userManager.IsInRoleAsync(user, role.Name)))
-                {
-                    result = await userManager.AddToRoleAsync(user, role.Name);
-                }
-                else if(!model[i].IsSelected && await userManager.IsInRoleAsync(user, role.Name))
-                {
-                    result = await userManager.RemoveFromRoleAsync(user, role.Name);
-                }
-                else
-                {
-                    continue;
-                }
+                var result = await roleManager.DeleteAsync(role);
 
                 if (result.Succeeded)
                 {
-                    //Checks to see if the loop is complete
-                    if (i < (model.Count - 1))
-                        continue;
-                    else
-                        return RedirectToAction("EditRole", new { Id = roleId });
+                    return RedirectToAction("ListRoles");
                 }
+
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                }
+
+                return View("ListRoles");
             }
-            return RedirectToAction("EditRole", new { Id = roleId });
         }
     }
+
 }

@@ -9,7 +9,7 @@
 
 @if (Model.Any())
 {
-    foreach(var role in Model)
+    foreach (var role in Model)
     {
         <div class="card mb-3">
             <div class="card-header">
@@ -19,8 +19,15 @@
                 <h5 class="card-title">Role Name : @role.Name</h5>
             </div>
             <div class="card-footer">
-                <a asp-action="EditRole" asp-controller="Administration" asp-route-id="@role.Id" class="btn btn-primary">Edit</a>
-                <a href="#" class="btn btn-danger">Delete</a>
+                <form asp-action="DeleteRole" asp-controller="Administration" asp-route-id="@role.Id" method="post">
+                    <a asp-action="EditRole" asp-controller="Administration" asp-route-id="@role.Id" class="btn btn-primary">Edit</a>
+                    <span><a id="deleteSpan_@role.Id" class="btn btn-danger text-white" onclick="confirmDelete('@role.Id', true)">Delete</a></span>
+                    <div id="confirmDeleteDiv_@role.Id" style="display:none" class="mt-1">
+                        <p>Are you sure you want to delete?</p>
+                        <button type="submit" class="btn btn-danger">Yes</button>
+                        <a class="btn btn-primary text-white" onclick="confirmDelete('@role.Id', false)">No</a>
+                    </div>
+                </form>
             </div>
         </div>
 
@@ -43,3 +50,7 @@ else
     </div>
 }
 
+
+@section Scripts {
+    <script src="~/js/CustomScript.js"></script>
+}
