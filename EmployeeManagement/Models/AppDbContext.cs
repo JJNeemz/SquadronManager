@@ -23,6 +23,12 @@ namespace EmployeeManagement.Models
             // Keys of identity tables are mapped on OnModelCreating method of IdentityDbContext class
             base.OnModelCreating(modelBuilder);
             modelBuilder.Seed();
+
+            // Loop through each foreign key in our entity types and set their delete behavior to No Action
+            foreach(var foreignKey in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
+            {
+                foreignKey.DeleteBehavior = DeleteBehavior.Restrict;
+            }
         }
     }
 }
