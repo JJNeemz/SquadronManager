@@ -42,6 +42,19 @@ namespace EmployeeManagement
             });
 
             services.AddMvc(options => options.EnableEndpointRouting = false).AddXmlSerializerFormatters();
+
+            // Claims policy
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("DeleteRolePolicy", policy => policy.RequireClaim("Delete Role"));
+            });
+
+            // Roles policy
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("AdminRolePolicy", policy => policy.RequireRole("Admin"));
+            });
+
             //The following line is saying, when someone requests the IEmployeeRepository interface,
             //Create an instance of the SQLEmployeeRepository class and inject that instance
             services.AddScoped<IEmployeeRepository, SQLEmployeeRepository>();

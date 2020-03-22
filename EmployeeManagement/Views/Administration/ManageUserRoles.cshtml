@@ -12,6 +12,9 @@
             <h2>Manage User Roles for @userName</h2>
         </div>
         <div class="card-body">
+            @* Model binding knows to bind each of these Roles to the List of UserRolesViewModel objects as it loops through them*@
+            @* We must use a FOR loop to generate unique input element names with an integer indexer in the name.
+                FOREACH loop names are not unique and therefore the model binder doesn't know to map the values to the list parameter*@
             @for (int i = 0; i < Model.Count; i++)
             {
                 <div class="form-check m-1">
