@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using EmployeeManagement.Models;
+using EmployeeManagement.Security;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -48,16 +50,7 @@ namespace EmployeeManagement
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("DeleteRolePolicy", policy => policy.RequireClaim("Delete Role", "true"));
-            });
-
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy("EditRolePolicy", policy => policy.RequireClaim("Edit Role", "true"));
-            });
-
-            // Roles policy
-            services.AddAuthorization(options =>
-            {
+                options.AddPolicy("EditRolePolicy", policy => policy.AddRequirements(new ManageAdminRolesAndClaimsRequirement()));
                 options.AddPolicy("AdminRolePolicy", policy => policy.RequireRole("Admin", "true"));
             });
 
@@ -66,6 +59,8 @@ namespace EmployeeManagement
             //Create an instance of the SQLEmployeeRepository class and inject that instance
             services.AddScoped<IEmployeeRepository, SQLEmployeeRepository>();
 
+            services.AddSingleton<IAuthorizationHandler, CanEditOnlyOtherAdminRolesAndClaims>();
+            services.AddSingleton<IAuthorizationHandler, SuperAdminHandler>();
 
         }
 
