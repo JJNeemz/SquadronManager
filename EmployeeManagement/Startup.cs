@@ -47,18 +47,18 @@ namespace EmployeeManagement
             // Claims policy
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("DeleteRolePolicy", policy => policy.RequireClaim("Delete Role"));
+                options.AddPolicy("DeleteRolePolicy", policy => policy.RequireClaim("Delete Role", "true"));
             });
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("EditRolePolicy", policy => policy.RequireClaim("Edit Role"));
+                options.AddPolicy("EditRolePolicy", policy => policy.RequireClaim("Edit Role", "true"));
             });
 
             // Roles policy
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("AdminRolePolicy", policy => policy.RequireRole("Admin"));
+                options.AddPolicy("AdminRolePolicy", policy => policy.RequireRole("Admin", "true"));
             });
 
 
