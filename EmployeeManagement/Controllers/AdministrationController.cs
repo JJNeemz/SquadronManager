@@ -12,6 +12,8 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
+// TODO: Implement DeleteRolePolicy
+
 namespace EmployeeManagement.Controllers
 {
     [Authorize(Policy = "AdminRolePolicy")]
@@ -233,6 +235,7 @@ namespace EmployeeManagement.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "EditRolePolicy")]
         public async Task<IActionResult> EditRole(string id)
         {
             var role = await roleManager.FindByIdAsync(id);
@@ -259,8 +262,8 @@ namespace EmployeeManagement.Controllers
             return View(model);
         }
 
-
         [HttpPost]
+        [Authorize(Policy = "EditRolePolicy")]
         public async Task<IActionResult> EditRole(EditRoleViewModel model)
         {
             var role = await roleManager.FindByIdAsync(model.Id);

@@ -24,6 +24,7 @@ namespace EmployeeManagement.Models
             base.OnModelCreating(modelBuilder);
             modelBuilder.Seed();
 
+            // TODO: Set delete user behavior to either Cascade or Null. Currently, you cannot delete a user while they belong to another role or claim.
             // Loop through each foreign key in our entity types and set their delete behavior to No Action
             foreach(var foreignKey in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
             {
