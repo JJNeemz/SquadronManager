@@ -85,10 +85,32 @@ namespace EmployeeManagement.Controllers
 
 
         [HttpGet]
-        public IActionResult Login()
+        public async Task<IActionResult> Login(string returnUrl)
         {
-            return View();
+            LoginViewModel model = new LoginViewModel
+            {
+                ReturnUrl = returnUrl,
+                // GetExternalAuthenticationSchemesAsync returns us the list of all configured external login providers
+                ExternalLogins = (await signInManager.GetExternalAuthenticationSchemesAsync()).ToList()
+            };
+
+            return View(model);
         }
+
+        [HttpPost]
+        // The "name" property of the Login View is bound to the parameter of this action if the names match,
+        // and the "value" property binds that value automatically to the matching parameter
+        public IActionResult ExternalLogin(string provider, string returnUrl)
+        {
+            var redirectUrl = Url.Action("ExternalLoginCallback", "Account",
+                new { ReturnUrl = returnUrl });
+
+            var properties = signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+            // Inherits from IActionResult redirects user to the external login providers login page
+            return new ChallengeResult(provider, properties);
+        }
+
+
 
         [HttpPost]
         // Model binding will automatically map the query string value with the returnUrl parameter

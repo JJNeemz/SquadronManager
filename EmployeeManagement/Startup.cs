@@ -45,6 +45,12 @@ namespace EmployeeManagement
 
             services.AddMvc(options => options.EnableEndpointRouting = false).AddXmlSerializerFormatters();
 
+            services.AddAuthentication().AddGoogle(options =>
+            {
+                options.ClientId = "173623478929-ks7iqdjr750foeuvn6dutiggs1jj5gpq.apps.googleusercontent.com";
+                options.ClientSecret = "HgJ_AXdUTAcZ_LQp-sDWROAR";
+            });
+
 
             // Claims policy
             services.AddAuthorization(options =>
