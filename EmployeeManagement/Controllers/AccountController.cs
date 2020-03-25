@@ -128,7 +128,7 @@ namespace EmployeeManagement.Controllers
                 return View("Login", model);
             }
 
-            // Get information from external provider when the user logs in using their service
+            // Get information from external provider when the user logs in using their service.
             var info = await signInManager.GetExternalLoginInfoAsync();
             if (info == null)
             {
@@ -136,7 +136,7 @@ namespace EmployeeManagement.Controllers
                 return View("Login", model);
             }
 
-            // Log user in using the information gathered from the external provider
+            // Log user in using the information gathered from the external provider.
             var signInResult = await signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
 
             if (signInResult.Succeeded)
@@ -145,7 +145,7 @@ namespace EmployeeManagement.Controllers
             }
             else
             {
-                // Get the email information from the email Claim provided by the external provider
+                // Get the email information from the email Claim provided by the external provider.
                 var email = info.Principal.FindFirstValue(ClaimTypes.Email);
 
                 if (email != null)
@@ -153,7 +153,8 @@ namespace EmployeeManagement.Controllers
                     // Check to see if the user has an existing local account
                     var user = await userManager.FindByEmailAsync(email);
 
-                    // If we don't find a user, we create a new local user account for that external user
+                    // If we don't find a user, we create a new local user account for that external user.
+                    // The code in this block keeps us from duplicating the same user, regardless of what provider they use to authenticate.
                     if (user == null)
                     {
                         user = new ApplicationUser
@@ -165,7 +166,7 @@ namespace EmployeeManagement.Controllers
                         await userManager.CreateAsync(user);
                     }
 
-                    // If we find the user, then the external user has a local account and we want to add a row in the AspNetUserLogins table
+                    // If we find the user, then the external user has a local account and we want to add a row in the AspNetUserLogins table.
                     await userManager.AddLoginAsync(user, info);
                     await signInManager.SignInAsync(user, isPersistent: false);
 

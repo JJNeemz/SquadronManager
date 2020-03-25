@@ -45,11 +45,17 @@ namespace EmployeeManagement
 
             services.AddMvc(options => options.EnableEndpointRouting = false).AddXmlSerializerFormatters();
 
-            services.AddAuthentication().AddGoogle(options =>
-            {
-                options.ClientId = "173623478929-ks7iqdjr750foeuvn6dutiggs1jj5gpq.apps.googleusercontent.com";
-                options.ClientSecret = "HgJ_AXdUTAcZ_LQp-sDWROAR";
-            });
+            services.AddAuthentication()
+                .AddGoogle(options =>
+                {
+                    options.ClientId = "173623478929-ks7iqdjr750foeuvn6dutiggs1jj5gpq.apps.googleusercontent.com";
+                    options.ClientSecret = "HgJ_AXdUTAcZ_LQp-sDWROAR";
+                })
+                .AddFacebook(options =>
+                {
+                    options.AppId = "204646917472013";
+                    options.AppSecret = "660d3e9b4d7e49d588077c74fdcc8e25";
+                });
 
 
             // Claims policy
