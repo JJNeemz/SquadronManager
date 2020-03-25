@@ -99,6 +99,47 @@ namespace EmployeeManagement.Controllers
         }
 
         [HttpPost]
+        // Model binding will automatically map the query string value with the returnUrl parameter
+        public async Task<IActionResult> Login(LoginViewModel model, string returnUrl)
+        {
+            model.ExternalLogins = (await signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+
+            if (ModelState.IsValid)
+            {
+                var user = await userManager.FindByEmailAsync(model.Email);
+
+                // Show error if user has not confirmed email
+                // Make sure that user uses the correct user name and password before showing the email not confirmed error
+                if (user != null && !user.EmailConfirmed && (await userManager.CheckPasswordAsync(user, model.Password)))
+                {
+                    ModelState.AddModelError(string.Empty, "Email not confirmed yet");
+                    return View(model);
+                }
+
+
+                var result = await signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
+
+                // Redirect user if login is successful
+                if (result.Succeeded)
+                {
+                    if (!string.IsNullOrEmpty(returnUrl))
+                    {
+                        return LocalRedirect(returnUrl);
+                    }
+                    else
+                    {
+                        return RedirectToAction("index", "home");
+                    }
+
+                }
+
+                ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
+
+            }
+            return View(model);
+        }
+
+        [HttpPost]
         // The "name" property of the Login View is bound to the parameter of this action if the names match,
         // and the "value" property binds that value automatically to the matching parameter
         public IActionResult ExternalLogin(string provider, string returnUrl)
@@ -136,6 +177,23 @@ namespace EmployeeManagement.Controllers
                 return View("Login", model);
             }
 
+            // Get the email claim from external login provider
+            var email = info.Principal.FindFirstValue(ClaimTypes.Email);
+            ApplicationUser user = null;
+
+            if (email != null)
+            {
+                // Find the user
+                user = await userManager.FindByEmailAsync(email);
+
+                // If email is not confirmed, display login view with validation error
+                if (user != null && !user.EmailConfirmed)
+                {
+                    ModelState.AddModelError(string.Empty, "Email not confirmed yet");
+                    return View("Login", model);
+                }
+            }
+
             // Log user in using the information gathered from the external provider.
             var signInResult = await signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
 
@@ -145,13 +203,10 @@ namespace EmployeeManagement.Controllers
             }
             else
             {
-                // Get the email information from the email Claim provided by the external provider.
-                var email = info.Principal.FindFirstValue(ClaimTypes.Email);
-
                 if (email != null)
                 {
                     // Check to see if the user has an existing local account
-                    var user = await userManager.FindByEmailAsync(email);
+                    user = await userManager.FindByEmailAsync(email);
 
                     // If we don't find a user, we create a new local user account for that external user.
                     // The code in this block keeps us from duplicating the same user, regardless of what provider they use to authenticate.
@@ -183,33 +238,7 @@ namespace EmployeeManagement.Controllers
 
 
 
-        [HttpPost]
-        // Model binding will automatically map the query string value with the returnUrl parameter
-        public async Task<IActionResult> Login(LoginViewModel model, string returnUrl)
-        {
-            if (ModelState.IsValid)
-            {
-                var result = await signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false) ;
 
-                // Redirect user if login is successful
-                if (result.Succeeded)
-                {
-                    if (!string.IsNullOrEmpty(returnUrl))
-                    {
-                        return LocalRedirect(returnUrl);
-                    } 
-                    else
-                    {
-                        return RedirectToAction("index", "home");
-                    }
-                    
-                }
-
-                ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
-
-            }
-            return View(model);
-        }
 
 
         [HttpPost]
