@@ -14,6 +14,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using MailKit.Net.Smtp;
+using MimeKit;
 
 namespace EmployeeManagement
 {
@@ -47,6 +49,7 @@ namespace EmployeeManagement
                 options.Password.RequireNonAlphanumeric = false;
             });
 
+
             services.AddMvc(options => options.EnableEndpointRouting = false).AddXmlSerializerFormatters();
 
             services.AddAuthentication()
@@ -74,7 +77,6 @@ namespace EmployeeManagement
             //The following line is saying, when someone requests the IEmployeeRepository interface,
             //Create an instance of the SQLEmployeeRepository class and inject that instance
             services.AddScoped<IEmployeeRepository, SQLEmployeeRepository>();
-
             services.AddSingleton<IAuthorizationHandler, CanEditOnlyOtherAdminRolesAndClaims>();
             services.AddSingleton<IAuthorizationHandler, SuperAdminHandler>();
 

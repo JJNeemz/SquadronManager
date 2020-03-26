@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using MailKit.Net.Smtp;
+using MimeKit;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -276,6 +278,27 @@ namespace EmployeeManagement.Controllers
 
                         logger.Log(LogLevel.Warning, confirmationLink);
 
+                        // TODO: Abstract this service
+                        // Begin Send Confirmation Email
+                        var message = new MimeMessage();
+                        message.From.Add(new MailboxAddress("Jordan Naeem", "jordan.naeem@gmail.com"));
+                        message.To.Add(new MailboxAddress(user.UserName, user.Email));
+                        message.Subject = "Employee Management Email Confirmation";
+                        message.Body = new TextPart("html")
+                        {
+                            Text = $"<h1>Password Confirmation</h1><p><a href={confirmationLink}>Click Here</a> to confirm your email address for the Employee Management application</p>"
+                        };
+
+                        using(var client = new SmtpClient())
+                        {
+                            client.Connect("smtp.gmail.com", 587, false);
+                            client.Authenticate("jjnwebdevelopment@gmail.com", "SchxMukx147258!");
+                            client.Send(message);
+                            client.Disconnect(true);
+                        }
+                        // End Send Confirmation Email
+
+
                         ViewBag.ErrorTitle = "Registration successful";
                         ViewBag.ErrorMessage = "You must confirm your email before logging in. Please click the confirmation link emailed to you.";
                         return View("Error");
@@ -331,6 +354,27 @@ namespace EmployeeManagement.Controllers
                         new { email = model.Email, token = token }, Request.Scheme);
 
                     logger.Log(LogLevel.Warning, passwordResetLink);
+
+                    // TODO: Abstract this service
+                    // Begin Send Confirmation Email
+                    var message = new MimeMessage();
+                    message.From.Add(new MailboxAddress("Jordan Naeem", "jordan.naeem@gmail.com"));
+                    message.To.Add(new MailboxAddress(user.UserName, user.Email));
+                    message.Subject = "Employee Management Password Reset";
+                    message.Body = new TextPart("html")
+                    {
+                        Text = $"<h1>Password Confirmation</h1><p><a href={passwordResetLink}>Click Here</a> to reset your password for the Employee Management application</p>"
+                    };
+
+                    using (var client = new SmtpClient())
+                    {
+                        client.Connect("smtp.gmail.com", 587, false);
+                        client.Authenticate("jjnwebdevelopment@gmail.com", "SchxMukx147258!");
+                        client.Send(message);
+                        client.Disconnect(true);
+                    }
+                    // End Send Confirmation Email
+
                     return View("ForgotPasswordConfirmation");
                 }
                 // We don't want to reveal that the account doesn't exist due to brute force attempts
@@ -339,5 +383,43 @@ namespace EmployeeManagement.Controllers
 
             return View(model);
         }
+
+
+        [HttpGet]
+        public IActionResult ResetPassword(string token, string email)
+        {
+            if (token == null || email == null)
+            {
+                ModelState.AddModelError(string.Empty, "Invalid password reset token");
+            }
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await userManager.FindByEmailAsync(model.Email);
+                if (user != null)
+                {
+                    var result = await userManager.ResetPasswordAsync(user, model.Token, model.Password);
+                    if (result.Succeeded)
+                    {
+                        return View("ResetPasswordConfirmation");
+                    }
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
+                    return View(model);
+                }
+                // Dont reveal if email doesnt exist to prevent brute force
+                return View("ResetPasswordConfirmation");
+            }
+            return View(model);
+        }
     }
+
+
 }
