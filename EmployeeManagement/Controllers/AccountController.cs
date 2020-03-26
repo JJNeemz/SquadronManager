@@ -266,6 +266,19 @@ namespace EmployeeManagement.Controllers
                         };
 
                         await userManager.CreateAsync(user);
+
+                        // Upon successful regestration, generate an email confirmation token.
+                        var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
+
+                        // Generate Email Confirmation Link to email to the user.
+                        var confirmationLink = Url.Action("ConfirmEmail", "Account",
+                            new { userId = user.Id, token = token }, Request.Scheme);
+
+                        logger.Log(LogLevel.Warning, confirmationLink);
+
+                        ViewBag.ErrorTitle = "Registration successful";
+                        ViewBag.ErrorMessage = "You must confirm your email before logging in. Please click the confirmation link emailed to you.";
+                        return View("Error");
                     }
 
                     // If we find the user, then the external user has a local account and we want to add a row in the AspNetUserLogins table.
