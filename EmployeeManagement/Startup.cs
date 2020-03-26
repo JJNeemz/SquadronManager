@@ -36,7 +36,8 @@ namespace EmployeeManagement
             {
                 options.SignIn.RequireConfirmedEmail = true;
             })
-                    .AddEntityFrameworkStores<AppDbContext>();
+                    .AddEntityFrameworkStores<AppDbContext>()
+                    .AddDefaultTokenProviders();
 
             // Override default password options
             services.Configure<IdentityOptions>(options =>

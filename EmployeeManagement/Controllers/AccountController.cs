@@ -8,6 +8,7 @@ using EmployeeManagement.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -17,11 +18,14 @@ namespace EmployeeManagement.Controllers
     {
         private readonly UserManager<ApplicationUser> userManager;
         private readonly SignInManager<ApplicationUser> signInManager;
+        private readonly ILogger<AccountController> logger;
 
-        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, 
+            ILogger<AccountController> logger)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
+            this.logger = logger;
         }
 
 
@@ -32,7 +36,7 @@ namespace EmployeeManagement.Controllers
         }
 
         [HttpPost]
-        // Need to make method async because of CreateAsync method
+        // Need to make method async because of CreateAsync method.
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
@@ -43,21 +47,35 @@ namespace EmployeeManagement.Controllers
                     Email = model.Email,
                     City = model.City
                 };
-                // Must use await keyword due to CreateAsync asynchronous method
+                // Must use await keyword due to CreateAsync asynchronous method.
                 var result = await userManager.CreateAsync(user, model.Password);
 
                 // Log in user if CreateAsync succeeds
                 if (result.Succeeded)
                 {
-                    //If admin user is already signed in, do not login to newly registered user
+                    // Upon successful regestration, generate an email confirmation token.
+                    var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
+
+                    // Generate Email Confirmation Link to email to the user.
+                    var confirmationLink = Url.Action("ConfirmEmail", "Account",
+                        new { userId = user.Id, token = token }, Request.Scheme);
+
+                    logger.Log(LogLevel.Warning, confirmationLink);
+
+                    //If admin user is already signed in, do not login to newly registered user.
                     if(signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
                     {
                         return RedirectToAction("ListUsers", "Administration");
                     }
 
-                    // Set isPersistent to false -- we don't want a permanent cookie
-                    await signInManager.SignInAsync(user, isPersistent: false);
-                    return RedirectToAction("index", "home");
+                    //// Set isPersistent to false -- we don't want a permanent cookie
+                    //await signInManager.SignInAsync(user, isPersistent: false);
+                    //return RedirectToAction("index", "home");
+
+                    // TODO: Create Registration Success View instead.
+                    ViewBag.ErrorTitle = "Registration Successful";
+                    ViewBag.ErrorMessage = "You must confirm your email before logging in. Please click the confirmation link emailed to you.";
+                    return View("Error");
                 }
                 // If CreateAsync fails, add the errors to the modelstate to be displayed on the validation summary tag helper
                 foreach (var error in result.Errors)
@@ -68,7 +86,35 @@ namespace EmployeeManagement.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> ConfirmEmail(string userId, string token)
+        {
+            if (userId == null || token == null)
+            {
+                return RedirectToAction("index", "home");
+            }
 
+            var user = await userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                ViewBag.ErrorMessage = $"The User ID {userId} is invalid";
+                return View("NotFound");
+            }
+
+            // Changes EmailConfirmed Column in AspNetUsers from FALSE to TRUE
+            var result = await userManager.ConfirmEmailAsync(user, token);
+            if (result.Succeeded)
+            {
+                // TODO: Log User in and Redirect to List Users View
+                return View();
+            }
+
+            ViewBag.ErrorTitle = "Email Cannot Be Confirmed";
+            return View("Error");
+        }
+
+
+        // Remote Validation
         [HttpPost][HttpGet]
         public async Task<IActionResult> IsEmailInUse(string email)
         {
@@ -99,6 +145,7 @@ namespace EmployeeManagement.Controllers
         }
 
         [HttpPost]
+        // TODO: Generate token confirmation if user has not confirmed email
         // Model binding will automatically map the query string value with the returnUrl parameter
         public async Task<IActionResult> Login(LoginViewModel model, string returnUrl)
         {
