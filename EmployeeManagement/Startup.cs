@@ -64,6 +64,10 @@ namespace EmployeeManagement
                     options.AppSecret = "660d3e9b4d7e49d588077c74fdcc8e25";
                 });
 
+            // Changes token lifespan of all tokens to 5 hours.
+            services.Configure<DataProtectionTokenProviderOptions>(options =>
+                        options.TokenLifespan = TimeSpan.FromHours(2));
+
 
             // Claims policy
             services.AddAuthorization(options =>
