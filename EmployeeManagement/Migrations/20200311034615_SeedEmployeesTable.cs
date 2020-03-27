@@ -9,7 +9,7 @@ namespace EmployeeManagement.Migrations
             migrationBuilder.InsertData(
                 table: "Employees",
                 columns: new[] { "Id", "Department", "Email", "Name" },
-                values: new object[] { 1, 2, "mark@pragimtech.com", "Mark" });
+                values: new object[] { 1, 2, "mark@abc.com", "Mark" });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

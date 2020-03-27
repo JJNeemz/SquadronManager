@@ -51,14 +51,14 @@ namespace EmployeeManagement.Migrations
                         {
                             Id = 1,
                             Department = 2,
-                            Email = "mary@pragimtech.com",
+                            Email = "mary@abc.com",
                             Name = "Mary"
                         },
                         new
                         {
                             Id = 2,
                             Department = 1,
-                            Email = "john@pragimtech.com",
+                            Email = "john@abc.com",
                             Name = "John"
                         });
                 });

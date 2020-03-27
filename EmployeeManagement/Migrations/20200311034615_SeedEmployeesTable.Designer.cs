@@ -48,7 +48,7 @@ namespace EmployeeManagement.Migrations
                         {
                             Id = 1,
                             Department = 2,
-                            Email = "mark@pragimtech.com",
+                            Email = "mark@abc.com",
                             Name = "Mark"
                         });
                 });

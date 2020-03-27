@@ -11,12 +11,12 @@ namespace EmployeeManagement.Migrations
                 keyColumn: "Id",
                 keyValue: 1,
                 columns: new[] { "Email", "Name" },
-                values: new object[] { "mary@pragimtech.com", "Mary" });
+                values: new object[] { "mary@abc.com", "Mary" });
 
             migrationBuilder.InsertData(
                 table: "Employees",
                 columns: new[] { "Id", "Department", "Email", "Name" },
-                values: new object[] { 2, 1, "john@pragimtech.com", "John" });
+                values: new object[] { 2, 1, "john@abc.com", "John" });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -31,7 +31,7 @@ namespace EmployeeManagement.Migrations
                 keyColumn: "Id",
                 keyValue: 1,
                 columns: new[] { "Email", "Name" },
-                values: new object[] { "mark@pragimtech.com", "Mark" });
+                values: new object[] { "mark@abc.com", "Mark" });
         }
     }
 }
