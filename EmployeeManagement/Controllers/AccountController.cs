@@ -165,8 +165,8 @@ namespace EmployeeManagement.Controllers
                     return View(model);
                 }
 
-
-                var result = await signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
+                // The last parameter is a boolean used to turn on account lockout if the user has too many failed login attempts
+                var result = await signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, true);
 
                 // Redirect user if login is successful
                 if (result.Succeeded)
@@ -179,7 +179,11 @@ namespace EmployeeManagement.Controllers
                     {
                         return RedirectToAction("index", "home");
                     }
+                }
 
+                if (result.IsLockedOut)
+                {
+                    return View("AccountLocked");
                 }
 
                 ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
@@ -408,6 +412,12 @@ namespace EmployeeManagement.Controllers
                     var result = await userManager.ResetPasswordAsync(user, model.Token, model.Password);
                     if (result.Succeeded)
                     {
+                        // Check if the account is locked out, and unlock it so the user can log in.
+                        if (await userManager.IsLockedOutAsync(user))
+                        {
+                            await userManager.SetLockoutEndDateAsync(user, DateTimeOffset.UtcNow);
+                        }
+
                         return View("ResetPasswordConfirmation");
                     }
                     foreach (var error in result.Errors)

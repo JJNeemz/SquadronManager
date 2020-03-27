@@ -32,22 +32,27 @@ namespace EmployeeManagement
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+
             services.AddDbContextPool<AppDbContext>(options => options.UseSqlServer(_config.GetConnectionString("EmployeeDBConnection")));
+
 
             services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             {
-                options.SignIn.RequireConfirmedEmail = true;
-            })
-                    .AddEntityFrameworkStores<AppDbContext>()
-                    .AddDefaultTokenProviders();
-
-            // Override default password options
-            services.Configure<IdentityOptions>(options =>
-            {
+                // Override default password requirements
                 options.Password.RequiredLength = 10;
                 options.Password.RequiredUniqueChars = 3;
                 options.Password.RequireNonAlphanumeric = false;
-            });
+
+                // Require users to confirm email before logging in
+                options.SignIn.RequireConfirmedEmail = true;
+
+                // Lock user out for 30 minutes after 5 failed login attempts.
+                options.Lockout.MaxFailedAccessAttempts = 5;
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
+
+            })
+                    .AddEntityFrameworkStores<AppDbContext>()
+                    .AddDefaultTokenProviders();
 
 
             services.AddMvc(options => options.EnableEndpointRouting = false).AddXmlSerializerFormatters();
