@@ -17,7 +17,10 @@
                 <div class="card-footer text-center">
                     <a asp-action="details" asp-controller="home" asp-route-id="@employee.Id" class="btn btn-primary m-1">Show</a>
                     <a asp-action="edit" asp-controller="home" asp-route-id="@employee.Id" class="btn btn-primary m-1">Edit</a>
-                    <a href="#" class="btn btn-danger m-1">Delete</a>
+                    <form method="post" asp-action="delete" asp-controller="home" asp-route-id="@employee.Id" class="m-1 auto-width d-inline">
+                        <button type="submit" class="btn btn-danger m-1">Delete</button>
+                    </form>
+                    
                 </div>
             </div>
         }

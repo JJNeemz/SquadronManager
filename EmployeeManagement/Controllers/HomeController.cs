@@ -157,5 +157,15 @@ namespace EmployeeManagement.Controllers
             }
         }
 
+        [HttpPost]
+        public IActionResult Delete(int id)
+        {
+            // Delete employee from repository
+            _employeeRepository.Delete(id);
+            // Get updated list of employees to pass to the index to list
+            var result = _employeeRepository.GetAllEmployee();
+            return View("index", result);
+        }
+
     }
 }
