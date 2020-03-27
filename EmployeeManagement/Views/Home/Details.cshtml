@@ -19,13 +19,32 @@
             </div>
             <div class="card-footer text-center">
                 <a asp-action="index" asp-controller="home" class="btn btn-primary">Back</a>
-                <a  asp-action="edit" asp-controller="home" asp-route-id="@Model.Employee.Id" class="btn btn-primary">Edit</a>
-                <a href="#" class="btn btn-danger">Delete</a>
+                <a asp-action="edit" asp-controller="home" asp-route-id="@Model.Employee.Id" class="btn btn-primary">Edit</a>
+                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal_@Model.Employee.Id">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="deleteModal_@Model.Employee.Id" class="modal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Delete @Model.Employee.Name</h4>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete @Model.Employee.Name?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary m-1" data-dismiss="modal">Cancel</button>
+                <form method="post" asp-action="delete" asp-controller="home" asp-route-id="@Model.Employee.Id" class="m-1 auto-width d-inline">
+                    <button type="submit" class="btn btn-danger m-1">Delete</button>
+                </form>
             </div>
         </div>
     </div>
 </div>
 
 @section Scripts {
-<script src="~/js/JavaScript.js"></script>
+    <script src="~/js/JavaScript.js"></script>
 }
