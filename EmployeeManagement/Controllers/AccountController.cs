@@ -424,8 +424,21 @@ namespace EmployeeManagement.Controllers
 
         [HttpGet]
         [Authorize]
-        public IActionResult ChangePassword()
+        public async Task<IActionResult> ChangePassword()
         {
+            // The User property is set to the logged in user.
+            // If the User is not logged in, it is set to null.
+            var user = await userManager.GetUserAsync(User);
+
+            // Checks if user has password. If they do not, it is set to null.
+            var userHasPassword = await userManager.HasPasswordAsync(user);
+
+            if (!userHasPassword)
+            {
+                // If the user does not have a password, we need to redirect them to
+                // the AddPassword action instead.
+                return RedirectToAction("AddPassword");
+            }
             return View();
         }
 
@@ -462,7 +475,49 @@ namespace EmployeeManagement.Controllers
             return View(model);
         }
 
-    }
 
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> AddPassword()
+        {
+            // The User property is set to the logged in user.
+            // If the User is not logged in, it is set to null.
+            var user = await userManager.GetUserAsync(User);
+
+            // Checks if user has password. If they do not, it is set to null.
+            var userHasPassword = await userManager.HasPasswordAsync(user);
+
+            if (userHasPassword)
+            {
+                // If the user already has a password, we do not need to add one to their 
+                // account and instead redirect them to ChangePassword action.
+                return RedirectToAction("ChangePassword");
+            }
+            return View();
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> AddPassword(AddPasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await userManager.GetUserAsync(User);
+                var result = await userManager.AddPasswordAsync(user, model.NewPassword);
+
+                if (!result.Succeeded)
+                {
+                    foreach(var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
+                    return View();
+                }
+                await signInManager.RefreshSignInAsync(user);
+                return View("AddPasswordConfirmation");
+            }
+            return View(model);
+        }
+    }
 
 }
