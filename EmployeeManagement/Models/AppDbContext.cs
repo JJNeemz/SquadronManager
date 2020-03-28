@@ -28,7 +28,7 @@ namespace EmployeeManagement.Models
             // Loop through each foreign key in our entity types and set their delete behavior to No Action
             foreach(var foreignKey in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
             {
-                foreignKey.DeleteBehavior = DeleteBehavior.Restrict;
+                foreignKey.DeleteBehavior = DeleteBehavior.Cascade;
             }
         }
     }

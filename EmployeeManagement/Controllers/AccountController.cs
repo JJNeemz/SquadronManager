@@ -46,8 +46,7 @@ namespace EmployeeManagement.Controllers
                 var user = new ApplicationUser
                 {
                     UserName = model.Email,
-                    Email = model.Email,
-                    City = model.City
+                    Email = model.Email
                 };
                 // Must use await keyword due to CreateAsync asynchronous method.
                 var result = await userManager.CreateAsync(user, model.Password);

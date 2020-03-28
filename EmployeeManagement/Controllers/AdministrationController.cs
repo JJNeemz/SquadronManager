@@ -131,7 +131,6 @@ namespace EmployeeManagement.Controllers
                 Id = user.Id,
                 Email = user.Email,
                 UserName = user.UserName,
-                City = user.City,
                 Claims = userClaims.Select(c => c.Type + " : " + c.Value).ToList(),
                 Roles = userRoles
             };
@@ -152,7 +151,6 @@ namespace EmployeeManagement.Controllers
             {
                 user.Email = model.Email;
                 user.UserName = model.UserName;
-                user.City = model.City;
 
                 var result = await userManager.UpdateAsync(user);
 
