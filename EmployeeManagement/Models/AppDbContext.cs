@@ -17,6 +17,7 @@ namespace EmployeeManagement.Models
 
         //This property is used to query and saves instances of the Employee class
         public DbSet<Employee> Employees { get; set; }
+        public DbSet<Office> Offices { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
