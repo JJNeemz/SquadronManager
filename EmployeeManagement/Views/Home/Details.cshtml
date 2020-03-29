@@ -20,7 +20,14 @@
             <div class="card-footer text-center">
                 <a asp-action="index" asp-controller="home" class="btn btn-primary">Back</a>
                 <a asp-action="edit" asp-controller="home" asp-route-id="@Model.Employee.Id" class="btn btn-primary">Edit</a>
-                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal_@Model.Employee.Id">Delete</button>
+                @if (signInManager.IsSignedIn(User))
+                {
+                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal_@Model.Employee.Id">Delete</button>
+                }
+                else
+                {
+                    <a asp-action="login" asp-controller="account" class="btn btn-danger">Delete</a>
+                }
             </div>
         </div>
     </div>

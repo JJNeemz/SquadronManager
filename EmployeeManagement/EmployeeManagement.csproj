@@ -8,6 +8,7 @@
   <ItemGroup>
     <Compile Remove="Migrations\20200318151511_Extend_IdentityUser.cs" />
     <Compile Remove="Migrations\20200318151511_Extend_IdentityUser.Designer.cs" />
+    <Compile Remove="Models\MockEmployeeRepository.cs" />
   </ItemGroup>
 
   <ItemGroup>
