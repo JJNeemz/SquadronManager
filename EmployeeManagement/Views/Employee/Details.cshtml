@@ -1,4 +1,4 @@
-﻿@model HomeDetailsViewModel
+﻿@model EmployeeDetailsViewModel
 
 @{
     ViewBag.Title = "Employee Details";
@@ -18,8 +18,8 @@
                 <h4>Department: @Model.Employee.Department</h4>
             </div>
             <div class="card-footer text-center">
-                <a asp-action="index" asp-controller="home" class="btn btn-primary">Back</a>
-                <a asp-action="edit" asp-controller="home" asp-route-id="@Model.Employee.Id" class="btn btn-primary">Edit</a>
+                <a asp-action="index" asp-controller="employee" class="btn btn-primary">Back</a>
+                <a asp-action="edit" asp-controller="employee" asp-route-id="@Model.Employee.Id" class="btn btn-primary">Edit</a>
                 @if (signInManager.IsSignedIn(User))
                 {
                     <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal_@Model.Employee.Id">Delete</button>
@@ -44,7 +44,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary m-1" data-dismiss="modal">Cancel</button>
-                <form method="post" asp-action="delete" asp-controller="home" asp-route-id="@Model.Employee.Id" class="m-1 auto-width d-inline">
+                <form method="post" asp-action="delete" asp-controller="employee" asp-route-id="@Model.Employee.Id" class="m-1 auto-width d-inline">
                     <button type="submit" class="btn btn-danger m-1">Delete</button>
                 </form>
             </div>

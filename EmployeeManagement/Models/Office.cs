@@ -16,8 +16,8 @@ namespace EmployeeManagement.Models
         public string Id { get; set; }
         [Required]
         public string Name { get; set; }
-        public List<Employee> Employees { get; set; }
         public int MinimumManning { get; set; }
         public int CurrentManning { get; set; }
+        public ICollection<Employee> Employees { get; set; }
     }
 }
