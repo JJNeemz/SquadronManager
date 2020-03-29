@@ -23,25 +23,44 @@
                 <h5 class="card-title">Role Name : @role.Name</h5>
             </div>
             <div class="card-footer">
-                <form asp-action="DeleteRole" asp-controller="Administration" asp-route-id="@role.Id" method="post">
-                    @if ((await authorizationService.AuthorizeAsync(User, "EditRolePolicy")).Succeeded)
-                    {
-                        <a asp-action="EditRole" asp-controller="Administration" asp-route-id="@role.Id" 
-                           class="btn btn-primary">Edit</a>
-                    }
+                @if ((await authorizationService.AuthorizeAsync(User, "EditRolePolicy")).Succeeded)
+                {
+                    <a asp-action="EditRole" asp-controller="Administration" asp-route-id="@role.Id"
+                        class="btn btn-primary">Edit</a>
+                }
 
-                    @if ((await authorizationService.AuthorizeAsync(User, "DeleteRolePolicy")).Succeeded)
-                    {
-                        <span><a id="deleteSpan_@role.Id" class="btn btn-danger text-white" 
-                                 onclick="confirmDelete('@role.Id', true)">Delete</a></span>
-                    }
-                    
-                    <div id="confirmDeleteDiv_@role.Id" style="display:none" class="mt-1">
-                        <p>Are you sure you want to delete?</p>
-                        <button type="submit" class="btn btn-danger">Yes</button>
-                        <a class="btn btn-primary text-white" onclick="confirmDelete('@role.Id', false)">No</a>
+                @if ((await authorizationService.AuthorizeAsync(User, "DeleteRolePolicy")).Succeeded)
+                {
+                    <button type="button" class="btn btn-danger m-1" data-toggle="modal"
+                            data-target="#deleteModal_@role.Id">
+                        Delete
+                    </button>
+                }
+            </div>
+        </div>
+
+        // Modal that appears when user clicks delete button
+        <div id="deleteModal_@role.Id" class="modal" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Delete @role.Name</h4>
                     </div>
-                </form>
+                    <div class="modal-body">
+                        <p>Are you sure you want to delete @role.Name?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary m-1" data-dismiss="modal">
+                            Cancel
+                        </button>
+                        <form method="post" asp-action="DeleteRole" asp-controller="Administration"
+                              asp-route-id="@role.Id" class="m-1 auto-width d-inline">
+                            <button type="submit" class="btn btn-danger m-1">
+                                Delete
+                            </button>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -63,9 +82,4 @@ else
             </a>
         </div>
     </div>
-}
-
-
-@section Scripts {
-    <script src="~/js/CustomScript.js"></script>
 }
