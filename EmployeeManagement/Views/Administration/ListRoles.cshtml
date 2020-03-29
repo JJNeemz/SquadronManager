@@ -26,12 +26,14 @@
                 <form asp-action="DeleteRole" asp-controller="Administration" asp-route-id="@role.Id" method="post">
                     @if ((await authorizationService.AuthorizeAsync(User, "EditRolePolicy")).Succeeded)
                     {
-                        <a asp-action="EditRole" asp-controller="Administration" asp-route-id="@role.Id" class="btn btn-primary">Edit</a>
+                        <a asp-action="EditRole" asp-controller="Administration" asp-route-id="@role.Id" 
+                           class="btn btn-primary">Edit</a>
                     }
 
                     @if ((await authorizationService.AuthorizeAsync(User, "DeleteRolePolicy")).Succeeded)
                     {
-                        <span><a id="deleteSpan_@role.Id" class="btn btn-danger text-white" onclick="confirmDelete('@role.Id', true)">Delete</a></span>
+                        <span><a id="deleteSpan_@role.Id" class="btn btn-danger text-white" 
+                                 onclick="confirmDelete('@role.Id', true)">Delete</a></span>
                     }
                     
                     <div id="confirmDeleteDiv_@role.Id" style="display:none" class="mt-1">
@@ -42,6 +44,7 @@
                 </form>
             </div>
         </div>
+
 
     }
 }

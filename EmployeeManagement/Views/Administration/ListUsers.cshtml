@@ -25,15 +25,39 @@
                 <h5 class="card-title">@user.UserName</h5>
             </div>
             <div class="card-footer">
-                <form asp-action="DeleteUser" asp-controller="Administration" asp-route-id="@user.Id" method="post">
-                    <a asp-action="EditUser" asp-controller="Administration" asp-route-id="@user.Id" class="btn btn-primary">Edit</a>
-                    <span><a id="deleteSpan_@user.Id" class="btn btn-danger text-white" onclick="confirmDelete('@user.Id', true)">Delete</a></span>
-                    <div id="confirmDeleteDiv_@user.Id" style="display:none" class="mt-1">
-                        <p>Are you sure you want to delete?</p>
-                        <button type="submit" class="btn btn-danger">Yes</button>
-                        <a class="btn btn-primary text-white" onclick="confirmDelete('@user.Id', false)">No</a>
+                <a asp-action="EditUser" asp-controller="Administration" asp-route-id="@user.Id" 
+                   class="btn btn-primary">
+                    Edit
+                </a>
+                <button type="button" class="btn btn-danger m-1" data-toggle="modal" 
+                        data-target="#deleteModal_@user.Id">
+                    Delete
+                </button>
+            </div>
+        </div>
+
+        // Modal that appears when user clicks delete button
+        <div id="deleteModal_@user.Id" class="modal" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Delete @user.UserName</h4>
                     </div>
-                </form>
+                    <div class="modal-body">
+                        <p>Are you sure you want to delete @user.UserName?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary m-1" data-dismiss="modal">
+                            Cancel
+                        </button>
+                        <form method="post" asp-action="DeleteUser" asp-controller="Administration" 
+                              asp-route-id="@user.Id" class="m-1 auto-width d-inline">
+                            <button type="submit" class="btn btn-danger m-1">
+                                Delete
+                            </button>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     }
