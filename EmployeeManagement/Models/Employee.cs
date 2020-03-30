@@ -18,5 +18,7 @@ namespace EmployeeManagement.Models
         public Dept? Department { get; set; }
         public string PhotoPath { get; set; }
         public Office Office { get; set; }
+        public Rank? Rank { get; set; }
+        public Afsc? Afsc { get; set; }
     }
 }
