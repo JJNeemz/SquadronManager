@@ -1,0 +1,51 @@
+﻿@model OfficeDetailsViewModel
+
+@{
+    ViewBag.Title = "Office Details";
+}
+
+<div class="row justify-content-center m-3">
+    <div class="col-sm-8">
+        <div class="card">
+            <div class="card-header">
+                <h1>@Model.Office.Name</h1>
+            </div>
+            <div class="card-body text-center">
+                <h4>Office ID: @Model.Office.Id</h4>
+                <h4>Minimum Manning: @Model.Office.MinimumManning</h4>
+                <h4>Current Manning: @Model.Office.CurrentManning</h4>
+            </div>
+            <div class="card-footer text-center">
+                <a asp-action="index" asp-controller="office" class="btn btn-primary">Back</a>
+                <a asp-action="edit" asp-controller="office" asp-route-id="@Model.Office.Id" class="btn btn-primary">Edit</a>
+                @if (signInManager.IsSignedIn(User))
+                {
+                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal_@Model.Office.Id">Delete</button>
+                }
+                else
+                {
+                    <a asp-action="login" asp-controller="account" class="btn btn-danger">Delete</a>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="deleteModal_@Model.Office.Id" class="modal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Delete @Model.Office.Name</h4>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete @Model.Office.Name?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary m-1" data-dismiss="modal">Cancel</button>
+                <form method="post" asp-action="delete" asp-controller="office" asp-route-id="@Model.Office.Id" class="m-1 auto-width d-inline">
+                    <button type="submit" class="btn btn-danger m-1">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

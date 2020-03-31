@@ -6,10 +6,10 @@ namespace EmployeeManagement.Models
 {
     public interface IOfficeRepository
     {
-        Office GetOffice(int id);
+        Office GetOffice(string id);
         IEnumerable<Office> GetAllOffices();
         Office Add(Office office);
         Office Update(Office officeChanges);
-        Office Delete(int id);
+        Office Delete(string id);
     }
 }

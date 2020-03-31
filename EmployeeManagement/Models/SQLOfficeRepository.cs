@@ -21,7 +21,7 @@ namespace EmployeeManagement.Models
             return office;
         }
 
-        public Office Delete(int id)
+        public Office Delete(string id)
         {
             Office office = context.Offices.Find(id);
             if(office != null)
@@ -38,7 +38,7 @@ namespace EmployeeManagement.Models
             return context.Offices;
         }
 
-        public Office GetOffice(int id)
+        public Office GetOffice(string id)
         {
             return context.Offices.Find(id);
         }

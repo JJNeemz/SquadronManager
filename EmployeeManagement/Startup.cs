@@ -86,6 +86,7 @@ namespace EmployeeManagement
             //The following line is saying, when someone requests the IEmployeeRepository interface,
             //Create an instance of the SQLEmployeeRepository class and inject that instance
             services.AddScoped<IEmployeeRepository, SQLEmployeeRepository>();
+            services.AddScoped<IOfficeRepository, SQLOfficeRepository>();
             services.AddSingleton<IAuthorizationHandler, CanEditOnlyOtherAdminRolesAndClaims>();
             services.AddSingleton<IAuthorizationHandler, SuperAdminHandler>();
 

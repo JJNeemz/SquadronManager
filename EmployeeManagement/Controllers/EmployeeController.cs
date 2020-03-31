@@ -18,15 +18,18 @@ namespace EmployeeManagement.Controllers
         private readonly IEmployeeRepository _employeeRepository;
         private readonly IWebHostEnvironment hostingEnvironrment;
         private readonly ILogger logger;
+        private readonly IOfficeRepository _officeRepository;
 
         //Injecting this dependency means that we do not have to manually change all controllers
         //that use this dependency if we want to change how we get our employees. All we need to do
         //is change the Startup.cs file and all controllers using the IEmployeeRepository injection
         //will inject the correct model and reflect the changes.
-        public EmployeeController(IEmployeeRepository employeeRepository, IWebHostEnvironment hostingEnvironrment, ILogger<EmployeeController> logger)
+        public EmployeeController(IEmployeeRepository employeeRepository, IWebHostEnvironment hostingEnvironrment, 
+            ILogger<EmployeeController> logger, IOfficeRepository officeRepository)
         {
 
             _employeeRepository = employeeRepository;
+            _officeRepository = officeRepository;
             this.hostingEnvironrment = hostingEnvironrment;
             this.logger = logger;
         }
@@ -146,7 +149,7 @@ namespace EmployeeManagement.Controllers
                 {
                     Name = model.Name,
                     Email = model.Email,
-                    Department = model.Department,
+                    Office = model.OfficeId,
                     PhotoPath = uniqueFileName
                 };
 

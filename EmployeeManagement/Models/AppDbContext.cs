@@ -24,6 +24,9 @@ namespace EmployeeManagement.Models
             // Keys of identity tables are mapped on OnModelCreating method of IdentityDbContext class
             base.OnModelCreating(modelBuilder);
             modelBuilder.Seed();
+            modelBuilder.Entity<Office>()
+                .Property(p => p.Id)
+                .ValueGeneratedOnAdd();
 
             // TODO: Set delete user behavior to either Cascade or Null. Currently, you cannot delete a user while they belong to another role or claim.
             // Loop through each foreign key in our entity types and set their delete behavior to No Action

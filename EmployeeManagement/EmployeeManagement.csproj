@@ -28,8 +28,4 @@
     <PackageReference Include="NLog.Web.AspNetCore" Version="4.9.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Views\Office\" />
-  </ItemGroup>
-
 </Project>
