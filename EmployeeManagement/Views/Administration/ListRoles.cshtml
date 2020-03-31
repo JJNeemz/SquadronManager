@@ -23,7 +23,7 @@
                 <h5 class="card-title">Role Name : @role.Name</h5>
             </div>
             <div class="card-footer">
-                @if ((await authorizationService.AuthorizeAsync(User, "EditRolePolicy")).Succeeded)
+                @if ((await authorizationService.AuthorizeAsync(User, "AdminRolePolicy")).Succeeded)
                 {
                     <a asp-action="EditRole" asp-controller="Administration" asp-route-id="@role.Id"
                         class="btn btn-primary">Edit</a>
