@@ -14,9 +14,10 @@ namespace EmployeeManagement.Models
             ErrorMessage ="Invalid email format")]
         [Display(Name = "Office Email")]
         public string Email { get; set; }
-        [Required]
-        public Dept? Department { get; set; }
+        //[Required]
+        //public Dept? Department { get; set; }
         public string PhotoPath { get; set; }
+        public string OfficeId { get; set; }
         public Office Office { get; set; }
         public Rank? Rank { get; set; }
         public Afsc? Afsc { get; set; }

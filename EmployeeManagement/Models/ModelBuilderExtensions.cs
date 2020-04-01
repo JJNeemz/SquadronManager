@@ -15,14 +15,12 @@ namespace EmployeeManagement.Models
                 {
                     Id = 1,
                     Name = "Mary",
-                    Department = Dept.CommandSupport,
                     Email = "mary@abc.com"
                 },
                 new Employee
                 {
                     Id = 2,
                     Name = "John",
-                    Department = Dept.ClientSystems,
                     Email = "john@abc.com"
                 }
             );
