@@ -93,11 +93,27 @@ namespace EmployeeManagement.Controllers
         public ViewResult Edit(int id)
         {
             Employee employee = _employeeRepository.GetEmployee(id);
+
+            // TODO : Refactor logic into EmployeeCreateViewModel
+            var listOfOffices = _officeRepository.GetAllOffices();
+            List<SelectListItem> officeList = new List<SelectListItem>();
+            foreach (Office office in listOfOffices)
+            {
+                officeList.Add(new SelectListItem
+                {
+                    Value = office.Id,
+                    Text = office.Name
+                });
+            }
+
             EmployeeEditViewModel employeeEditViewModel = new EmployeeEditViewModel
             {
-                Id = employee.Id,
+                Id = id,
+                Employee = employee,
                 Name = employee.Name,
                 Email = employee.Email,
+                OfficeId = employee.OfficeId,
+                OfficeList = officeList,
                 ExistingPhotoPath = employee.PhotoPath
             };
             return View(employeeEditViewModel);
@@ -111,6 +127,7 @@ namespace EmployeeManagement.Controllers
                 Employee employee = _employeeRepository.GetEmployee(model.Id);
                 employee.Name = model.Name;
                 employee.Email = model.Email;
+                employee.OfficeId = model.OfficeId;
                 if (model.Photo != null)
                 {
                     if (model.ExistingPhotoPath != null)
