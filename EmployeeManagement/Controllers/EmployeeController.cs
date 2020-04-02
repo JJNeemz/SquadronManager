@@ -97,7 +97,6 @@ namespace EmployeeManagement.Controllers
             {
                 Id = employee.Id,
                 Name = employee.Name,
-                //Department = employee.Department,
                 Email = employee.Email,
                 ExistingPhotoPath = employee.PhotoPath
             };
@@ -111,7 +110,6 @@ namespace EmployeeManagement.Controllers
             {
                 Employee employee = _employeeRepository.GetEmployee(model.Id);
                 employee.Name = model.Name;
-                //employee.Department = model.Department;
                 employee.Email = model.Email;
                 if (model.Photo != null)
                 {

@@ -42,7 +42,8 @@ namespace EmployeeManagement.Models
 
         public Employee GetEmployee(int Id)
         {
-            return context.Employees.Find(Id);
+            // Retrieve First employee whose Id equals the Id parameter, as well as its related office.
+            return context.Employees.Include(e => e.Office).FirstOrDefault(e => e.Id == Id);
         }
 
         public Employee Update(Employee employeeChanges)

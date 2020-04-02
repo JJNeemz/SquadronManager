@@ -18,12 +18,7 @@
                 <h4>Employee ID: @Model.Employee.Id</h4>
                 <h4>Email: @Model.Employee.Email</h4>
                 <h4>
-                    Office:
-                    @{
-                        var OfficeName = _officeRepository.GetOffice(Model.Employee.OfficeId);
-                    }
-                    @OfficeName.Name
-                </h4>
+                    Office: @Model.Employee.Office.Name</h4>
             </div>
             <div class="card-footer text-center">
                 <a asp-action="index" asp-controller="employee" class="btn btn-primary">Back</a>
