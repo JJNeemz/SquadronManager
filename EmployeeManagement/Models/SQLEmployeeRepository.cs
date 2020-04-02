@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -32,9 +33,9 @@ namespace EmployeeManagement.Models
             return employee;
         }
 
-        public IEnumerable<Employee> GetAllEmployee()
+        public IList<Employee> GetAllEmployee()
         {
-            return context.Employees;
+            return context.Employees.Include(e => e.Office).ToList();
         }
 
         public Employee GetEmployee(int Id)

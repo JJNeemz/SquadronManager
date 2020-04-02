@@ -2,7 +2,7 @@
 
 namespace EmployeeManagement.Migrations
 {
-    public partial class RemoveDeptRequirement : Migration
+    public partial class OfficeModel_ICollectionToIList : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

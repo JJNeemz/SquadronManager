@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
 
 namespace EmployeeManagement.Controllers
 {
@@ -19,17 +21,19 @@ namespace EmployeeManagement.Controllers
         private readonly IWebHostEnvironment hostingEnvironrment;
         private readonly ILogger logger;
         private readonly IOfficeRepository _officeRepository;
+        private readonly AppDbContext _context;
 
         //Injecting this dependency means that we do not have to manually change all controllers
         //that use this dependency if we want to change how we get our employees. All we need to do
         //is change the Startup.cs file and all controllers using the IEmployeeRepository injection
         //will inject the correct model and reflect the changes.
         public EmployeeController(IEmployeeRepository employeeRepository, IWebHostEnvironment hostingEnvironrment, 
-            ILogger<EmployeeController> logger, IOfficeRepository officeRepository)
+            ILogger<EmployeeController> logger, IOfficeRepository officeRepository, AppDbContext context)
         {
 
             _employeeRepository = employeeRepository;
             _officeRepository = officeRepository;
+            _context = context;
             this.hostingEnvironrment = hostingEnvironrment;
             this.logger = logger;
         }
@@ -146,7 +150,6 @@ namespace EmployeeManagement.Controllers
                 string uniqueFileName = ProcessUploadedFile(model);
                 //var office = _officeRepository.GetOffice(model.OfficeId);
 
-
                 Employee newEmployee = new Employee
                 {
                     Name = model.Name,
@@ -156,6 +159,7 @@ namespace EmployeeManagement.Controllers
                 };
 
                 _employeeRepository.Add(newEmployee);
+
                 return RedirectToAction("details", new { id = newEmployee.Id });
             }
             else

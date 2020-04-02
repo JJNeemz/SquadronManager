@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EmployeeManagement.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20200401033426_AddOfficeIdForeignKey_Employee")]
-    partial class AddOfficeIdForeignKey_Employee
+    [Migration("20200402015705_OfficeModel_ICollectionToIList")]
+    partial class OfficeModel_ICollectionToIList
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
