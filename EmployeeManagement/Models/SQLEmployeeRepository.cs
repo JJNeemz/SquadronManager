@@ -35,6 +35,8 @@ namespace EmployeeManagement.Models
 
         public IList<Employee> GetAllEmployee()
         {
+            // Include tells EF core that it should fetch the offices related to these employees.
+            // If we don't specifically ask to retrieve those related category objects, EF core won't.
             return context.Employees.Include(e => e.Office).ToList();
         }
 

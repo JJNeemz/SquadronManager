@@ -1,5 +1,6 @@
 ﻿using EmployeeManagement.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -19,10 +20,12 @@ namespace EmployeeManagement.ViewModels
             ErrorMessage = "Invalid email format")]
         [Display(Name = "Office Email")]
         public string Email { get; set; }
-        //[Required]
-        //public Dept? Department { get; set; }
         public IFormFile Photo { get; set; }
         public string OfficeId { get; set; }
-        
+
+        public List<Office> Offices { get; set; }
+
+        // Create SelectListItem list to use for dropdown
+        public List<SelectListItem> OfficeList { get; set; }
     }
 }

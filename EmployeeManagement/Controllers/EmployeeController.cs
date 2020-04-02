@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace EmployeeManagement.Controllers
 {
@@ -139,7 +140,24 @@ namespace EmployeeManagement.Controllers
         [HttpGet]
         public ViewResult Create()
         {
-            return View();
+            // TODO : Refactor logic into EmployeeCreateViewModel
+            var listOfOffices = _officeRepository.GetAllOffices();
+            List<SelectListItem> officeList = new List<SelectListItem>();
+            foreach(Office office in listOfOffices)
+            {
+                officeList.Add(new SelectListItem
+                {
+                    Value = office.Id,
+                    Text = office.Name
+                });
+            }
+
+            EmployeeCreateViewModel model = new EmployeeCreateViewModel()
+            {
+                OfficeList = officeList
+            };
+
+            return View(model);
         }
 
         [HttpPost]
