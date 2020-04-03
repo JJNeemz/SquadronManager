@@ -6,11 +6,13 @@ using Microsoft.AspNetCore.Mvc;
 using EmployeeManagement.Models;
 using Microsoft.Extensions.Logging;
 using EmployeeManagement.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace EmployeeManagement.Controllers
 {
+    [Authorize]
     public class OfficeController : Controller
     {
         private IEmployeeRepository _employeeRepository;
