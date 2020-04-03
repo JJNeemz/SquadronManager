@@ -41,7 +41,7 @@ namespace EmployeeManagement.Models
 
         public Office GetOffice(string id)
         {
-            return context.Offices.Find(id);
+            return context.Offices.Include(o => o.Employees).Single(o => o.Id == id);
         }
 
         public Office Update(Office officeChanges)

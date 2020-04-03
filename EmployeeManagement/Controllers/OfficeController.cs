@@ -65,9 +65,12 @@ namespace EmployeeManagement.Controllers
                 return View("OfficeNotFound", id);
             }
 
+            var currentManning = office.Employees.Count();
+
             OfficeDetailsViewModel officeDetailsViewModel = new OfficeDetailsViewModel()
             {
                 Office = office,
+                CurrentManning = currentManning
             };
 
             return View(officeDetailsViewModel);

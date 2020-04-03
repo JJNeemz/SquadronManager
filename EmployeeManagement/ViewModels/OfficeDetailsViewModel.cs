@@ -9,5 +9,6 @@ namespace EmployeeManagement.ViewModels
     public class OfficeDetailsViewModel
     {
         public Office Office { get; set; }
+        public int CurrentManning { get; set; }
     }
 }
