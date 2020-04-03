@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -35,7 +36,7 @@ namespace EmployeeManagement.Models
 
         public IEnumerable<Office> GetAllOffices()
         {
-            return context.Offices;
+            return context.Offices.Include(o => o.Employees);
         }
 
         public Office GetOffice(string id)

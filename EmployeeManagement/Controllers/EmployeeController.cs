@@ -66,6 +66,55 @@ namespace EmployeeManagement.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        public ViewResult Create()
+        {
+            // TODO : Refactor logic into EmployeeCreateViewModel
+            var listOfOffices = _officeRepository.GetAllOffices();
+            List<SelectListItem> officeList = new List<SelectListItem>();
+            foreach (Office office in listOfOffices)
+            {
+                officeList.Add(new SelectListItem
+                {
+                    Value = office.Id,
+                    Text = office.Name
+                });
+            }
+
+            EmployeeCreateViewModel model = new EmployeeCreateViewModel()
+            {
+                OfficeList = officeList
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult Create(EmployeeCreateViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                string uniqueFileName = ProcessUploadedFile(model);
+                //var office = _officeRepository.GetOffice(model.OfficeId);
+
+                Employee newEmployee = new Employee
+                {
+                    Name = model.Name,
+                    Email = model.Email,
+                    OfficeId = model.OfficeId,
+                    PhotoPath = uniqueFileName
+                };
+
+                _employeeRepository.Add(newEmployee);
+
+                return RedirectToAction("details", new { id = newEmployee.Id });
+            }
+            else
+            {
+                return View();
+            }
+        }
+
 
         [AllowAnonymous]
         public ViewResult Details(int? id)
@@ -150,56 +199,6 @@ namespace EmployeeManagement.Controllers
             }
         }
 
-
-
-        [HttpGet]
-        public ViewResult Create()
-        {
-            // TODO : Refactor logic into EmployeeCreateViewModel
-            var listOfOffices = _officeRepository.GetAllOffices();
-            List<SelectListItem> officeList = new List<SelectListItem>();
-            foreach(Office office in listOfOffices)
-            {
-                officeList.Add(new SelectListItem
-                {
-                    Value = office.Id,
-                    Text = office.Name
-                });
-            }
-
-            EmployeeCreateViewModel model = new EmployeeCreateViewModel()
-            {
-                OfficeList = officeList
-            };
-
-            return View(model);
-        }
-
-        [HttpPost]
-        public IActionResult Create(EmployeeCreateViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                string uniqueFileName = ProcessUploadedFile(model);
-                //var office = _officeRepository.GetOffice(model.OfficeId);
-
-                Employee newEmployee = new Employee
-                {
-                    Name = model.Name,
-                    Email = model.Email,
-                    OfficeId = model.OfficeId,
-                    PhotoPath = uniqueFileName
-                };
-
-                _employeeRepository.Add(newEmployee);
-
-                return RedirectToAction("details", new { id = newEmployee.Id });
-            }
-            else
-            {
-                return View();
-            }
-        }
 
         [HttpPost]
         public IActionResult Delete(int id)
