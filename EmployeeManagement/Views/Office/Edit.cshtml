@@ -1,0 +1,28 @@
+﻿@model OfficeEditViewModel
+
+@{ 
+    ViewBag.Title = "Edit Office";
+}
+
+<form enctype="multipart/form-data" asp-controller="office" asp-action="edit" method="post" class="mt-3">
+    <input hidden asp-for="Id" />
+    <div class="form-group row">
+        <label asp-for="@Model.Office.Name" class="col-sm-2 col-form-label"></label>
+        <div class="col-sm-10">
+            <span asp-validation-for="@Model.Office.Name" class="text-danger"></span>
+            <input asp-for="@Model.Office.Name" class="form-control" placeholder="Name" />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label asp-for="@Model.Office.MinimumManning" class="col-sm-2 col-form-label"></label>
+        <div class="col-sm-10">
+            <span asp-validation-for="@Model.Office.MinimumManning" class="text-danger"></span>
+            <input asp-for="@Model.Office.MinimumManning" type="number" class="form-control" placeholder="Minimum Manning" />
+        </div>
+    </div>
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div>
+        <button type="submit" class="btn btn-primary">Update</button>
+        <a asp-controller="office" asp-action="index" class="btn btn-primary">Cancel</a>
+    </div>
+</form>

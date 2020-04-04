@@ -77,5 +77,36 @@ namespace EmployeeManagement.Controllers
 
             return View(officeDetailsViewModel);
         }
+
+        [HttpGet]
+        public IActionResult Edit(string id)
+        {
+            Office office = _officeRepository.GetOffice(id);
+            OfficeEditViewModel model = new OfficeEditViewModel()
+            {
+                Office = office,
+                Id = id
+            };
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(OfficeEditViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                Office office = _officeRepository.GetOffice(model.Id);
+                office.Name = model.Office.Name;
+                office.MinimumManning = model.Office.MinimumManning;
+
+                _officeRepository.Update(office);
+                return RedirectToAction("index");
+            }
+            else
+            {
+                return View();
+            }
+        }
+
     }
 }

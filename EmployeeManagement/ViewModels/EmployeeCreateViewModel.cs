@@ -18,14 +18,16 @@ namespace EmployeeManagement.ViewModels
         [Required]
         [RegularExpression(@"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$",
             ErrorMessage = "Invalid email format")]
-        [Display(Name = "Office Email")]
         public string Email { get; set; }
         public IFormFile Photo { get; set; }
+        [Display(Name="Office")]
         public string OfficeId { get; set; }
 
         public List<Office> Offices { get; set; }
 
         // Create SelectListItem list to use for dropdown
         public List<SelectListItem> OfficeList { get; set; }
+        [Display(Name="Air Force Specialty Code")]
+        public Afsc Afsc { get; set; }
     }
 }

@@ -10,6 +10,8 @@
         <div class="card m-3" style="min-width: 18rem; max-width:30.5%;">
             <div class="card-header">
                 <h3>@office.Name</h3>
+            </div>
+            <div class="card-body">
                 <h4>Minimum Manning : @office.MinimumManning</h4>
                 <h4>Current Manning : @office.Employees.Where(e => e.OfficeId == office.Id).Count()</h4>
             </div>
