@@ -28,6 +28,6 @@ namespace EmployeeManagement.ViewModels
         // Create SelectListItem list to use for dropdown
         public List<SelectListItem> OfficeList { get; set; }
         [Display(Name="Air Force Specialty Code")]
-        public Afsc Afsc { get; set; }
+        public Afsc? Afsc { get; set; }
     }
 }

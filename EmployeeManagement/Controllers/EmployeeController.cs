@@ -12,6 +12,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Text;
+using System.ComponentModel.DataAnnotations;
+using System.Reflection;
 
 namespace EmployeeManagement.Controllers
 {
@@ -58,6 +61,22 @@ namespace EmployeeManagement.Controllers
             return uniqueFileName;
         }
 
+        private static string GetEnumDisplayName(Afsc? name)
+        {
+            if (name != null)
+            {
+                return name.GetType().GetMember(name.ToString())
+                           .First().GetCustomAttribute<DisplayAttribute>().Name;
+            }
+            else
+            {
+                return "No Registered AFSC";
+            }
+
+
+
+        }
+
 
         [AllowAnonymous]
         public ViewResult Index()
@@ -102,7 +121,8 @@ namespace EmployeeManagement.Controllers
                     Name = model.Name,
                     Email = model.Email,
                     OfficeId = model.OfficeId,
-                    PhotoPath = uniqueFileName
+                    PhotoPath = uniqueFileName,
+                    Afsc = model.Afsc
                 };
 
                 _employeeRepository.Add(newEmployee);
@@ -129,9 +149,12 @@ namespace EmployeeManagement.Controllers
                 return View("EmployeeNotFound", id.Value);
             }
 
+
             EmployeeDetailsViewModel employeeDetailsViewModel = new EmployeeDetailsViewModel()
             {
                 Employee = employee,
+                Afsc = employee.Afsc,
+                AfscDisplayName = GetEnumDisplayName(employee.Afsc),
                 PageTitle = "Employee Details"
             };
             return View(employeeDetailsViewModel);
@@ -163,7 +186,9 @@ namespace EmployeeManagement.Controllers
                 Email = employee.Email,
                 OfficeId = employee.OfficeId,
                 OfficeList = officeList,
+                Afsc = employee.Afsc,
                 ExistingPhotoPath = employee.PhotoPath
+
             };
             return View(employeeEditViewModel);
         }
@@ -177,6 +202,7 @@ namespace EmployeeManagement.Controllers
                 employee.Name = model.Name;
                 employee.Email = model.Email;
                 employee.OfficeId = model.OfficeId;
+                employee.Afsc = model.Afsc;
                 if (model.Photo != null)
                 {
                     if (model.ExistingPhotoPath != null)
