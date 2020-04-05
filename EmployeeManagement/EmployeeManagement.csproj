@@ -14,6 +14,7 @@
     <Compile Remove="Migrations\20200401033426_AddOfficeIdForeignKey_Employee.Designer.cs" />
     <Compile Remove="Migrations\20200402014504_UpdateGetAllEmployeeRepo.cs" />
     <Compile Remove="Migrations\20200402014504_UpdateGetAllEmployeeRepo.Designer.cs" />
+    <Compile Remove="Models\Dept.cs" />
     <Compile Remove="Models\MockEmployeeRepository.cs" />
   </ItemGroup>
 
