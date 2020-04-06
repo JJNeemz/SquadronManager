@@ -12,6 +12,7 @@ namespace EmployeeManagement.ViewModels
         public Employee Employee { get; set; }
         public string PageTitle { get; set; }
         public string OfficeId { get; set; }
+        public string OfficeName { get; set; }
         public Afsc? Afsc { get; set; }
         public string AfscDisplayName { get; set; }
 

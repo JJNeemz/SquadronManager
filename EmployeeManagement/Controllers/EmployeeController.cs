@@ -149,13 +149,19 @@ namespace EmployeeManagement.Controllers
                 return View("EmployeeNotFound", id.Value);
             }
 
+            string officeName = "Not Assigned To An Office";
+            if(employee.OfficeId != null)
+            {
+                officeName = employee.Office.Name;
+            }
 
             EmployeeDetailsViewModel employeeDetailsViewModel = new EmployeeDetailsViewModel()
             {
                 Employee = employee,
                 Afsc = employee.Afsc,
                 AfscDisplayName = GetEnumDisplayName(employee.Afsc),
-                PageTitle = "Employee Details"
+                PageTitle = "Employee Details",
+                OfficeName = officeName
             };
             return View(employeeDetailsViewModel);
         }
