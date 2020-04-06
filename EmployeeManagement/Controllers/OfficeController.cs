@@ -157,10 +157,18 @@ namespace EmployeeManagement.Controllers
         {
             for(var i = 0; i < model.Count; i++)
             {
-                if(model[i].IsSelected && model[i].EmployeeOfficeId != model[i].CurrentOfficeId)
+                var employee = _employeeRepository.GetEmployee(model[i].EmployeeId);
+                // If the employee is selected and belongs to a different office, remove the employee
+                // from that office, and reassign to the current office.
+                if (model[i].IsSelected && model[i].EmployeeOfficeId != model[i].CurrentOfficeId)
                 {
-                    var employee = _employeeRepository.GetEmployee(model[i].EmployeeId);
                     employee.OfficeId = model[i].CurrentOfficeId;
+                    _employeeRepository.Update(employee);
+                }
+                // If employee is deselected, set office to NULL
+                else if (model[i].IsSelected == false && model[i].EmployeeOfficeId == model[i].CurrentOfficeId)
+                {
+                    employee.OfficeId = null;
                     _employeeRepository.Update(employee);
                 }
                 else
