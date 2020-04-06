@@ -108,5 +108,67 @@ namespace EmployeeManagement.Controllers
             }
         }
 
+        [HttpGet]
+        public IActionResult ManageEmployees(string officeId)
+        {
+            var office = _officeRepository.GetOffice(officeId);
+            var employees = _employeeRepository.GetAllEmployee();
+            // Initialize OfficeManageEmployeesViewModel to hold all of the different employee information
+            var model = new List<OfficeManageEmployeesViewModel>();
+
+            if (office != null)
+            {
+                ViewBag.officeId = officeId;
+                ViewBag.officeName = office.Name;
+                
+
+                foreach(Employee employee in employees)
+                {
+
+                    OfficeManageEmployeesViewModel officeManageEmployeesViewModel = new OfficeManageEmployeesViewModel()
+                    {
+                        EmployeeId = employee.Id,
+                        EmployeeName = employee.Name,
+                        EmployeeOfficeId = employee.OfficeId,
+                        CurrentOfficeId = officeId
+                    };
+
+                    //Check if employee belongs to this office and assign to bool
+                    if (employee.OfficeId == officeId)
+                    {
+                        officeManageEmployeesViewModel.IsSelected = true;
+                    } 
+                    else
+                    {
+                        officeManageEmployeesViewModel.IsSelected = false;
+                    }
+                    model.Add(officeManageEmployeesViewModel);
+                }
+                return View(model);
+
+            }
+
+            ViewBag.ErrorMessage = $"The Office ID {officeId} is invalid";
+            return View("NotFound");
+        }
+
+        [HttpPost]
+        public IActionResult ManageEmployees(List<OfficeManageEmployeesViewModel> model)
+        {
+            for(var i = 0; i < model.Count; i++)
+            {
+                if(model[i].IsSelected && model[i].EmployeeOfficeId != model[i].CurrentOfficeId)
+                {
+                    var employee = _employeeRepository.GetEmployee(model[i].EmployeeId);
+                    employee.OfficeId = model[i].CurrentOfficeId;
+                    _employeeRepository.Update(employee);
+                }
+                else
+                {
+                    continue;
+                }
+            }
+            return RedirectToAction("index");
+        }
     }
 }

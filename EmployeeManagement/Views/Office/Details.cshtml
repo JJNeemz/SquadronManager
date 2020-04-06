@@ -61,6 +61,8 @@
         }
     </div>
     <div class="card-footer">
-        <a href="#" class="btn btn-primary auto-width">Add or Remove Employees</a>
+        <a asp-action="ManageEmployees" asp-controller="Office" class="btn btn-primary auto-width" asp-route-officeId="@Model.Office.Id">
+            Add or Remove Employees
+        </a>
     </div>
 </div>
