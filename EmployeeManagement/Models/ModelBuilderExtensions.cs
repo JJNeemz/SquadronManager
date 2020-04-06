@@ -14,13 +14,15 @@ namespace EmployeeManagement.Models
                 new Employee
                 {
                     Id = 1,
-                    Name = "Mary",
+                    FirstName = "Mary",
+                    LastName = "Doe",
                     Email = "mary@abc.com"
                 },
                 new Employee
                 {
                     Id = 2,
-                    Name = "John",
+                    FirstName = "John",
+                    LastName = "Smith",
                     Email = "john@abc.com"
                 }
             );

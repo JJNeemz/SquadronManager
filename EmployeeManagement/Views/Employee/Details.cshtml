@@ -11,7 +11,7 @@
     <div class="col-sm-8">
         <div class="card">
             <div class="card-header">
-                <h1>@Model.Employee.Name</h1>
+                <h1>@Model.Employee.LastName, @Model.Employee.FirstName</h1>
             </div>
             <div class="card-body text-center">
                 <img class="card-img-top imageThumbnail" src="@photoPath" asp-append-version="true" />
@@ -42,10 +42,10 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Delete @Model.Employee.Name</h4>
+                <h4 class="modal-title">Delete @Model.Employee.LastName, @Model.Employee.FirstName</h4>
             </div>
             <div class="modal-body">
-                <p>Are you sure you want to delete @Model.Employee.Name?</p>
+                <p>Are you sure you want to delete @Model.Employee.LastName, @Model.Employee.FirstName?</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary m-1" data-dismiss="modal">Cancel</button>

@@ -128,7 +128,8 @@ namespace EmployeeManagement.Controllers
                     OfficeManageEmployeesViewModel officeManageEmployeesViewModel = new OfficeManageEmployeesViewModel()
                     {
                         EmployeeId = employee.Id,
-                        EmployeeName = employee.Name,
+                        EmployeeFirstName = employee.FirstName,
+                        EmployeeLastName = employee.LastName,
                         EmployeeOfficeId = employee.OfficeId,
                         CurrentOfficeId = officeId
                     };

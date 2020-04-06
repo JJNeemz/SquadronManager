@@ -57,7 +57,7 @@
     <div class="card-body">
         @foreach(Employee employee in Model.Office.Employees)
         {
-            <h4>@employee.Name</h4>
+            <h4>@employee.LastName, @employee.FirstName</h4>
         }
     </div>
     <div class="card-footer">

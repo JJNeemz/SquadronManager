@@ -118,7 +118,8 @@ namespace EmployeeManagement.Controllers
 
                 Employee newEmployee = new Employee
                 {
-                    Name = model.Name,
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
                     Email = model.Email,
                     OfficeId = model.OfficeId,
                     PhotoPath = uniqueFileName,
@@ -188,7 +189,8 @@ namespace EmployeeManagement.Controllers
             {
                 Id = id,
                 Employee = employee,
-                Name = employee.Name,
+                FirstName = employee.FirstName,
+                LastName = employee.LastName,
                 Email = employee.Email,
                 OfficeId = employee.OfficeId,
                 OfficeList = officeList,
@@ -205,7 +207,8 @@ namespace EmployeeManagement.Controllers
             if (ModelState.IsValid)
             {
                 Employee employee = _employeeRepository.GetEmployee(model.Id);
-                employee.Name = model.Name;
+                employee.FirstName = model.FirstName;
+                employee.LastName = model.LastName;
                 employee.Email = model.Email;
                 employee.OfficeId = model.OfficeId;
                 employee.Afsc = model.Afsc;
