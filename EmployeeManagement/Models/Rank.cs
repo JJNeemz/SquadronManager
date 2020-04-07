@@ -17,6 +17,7 @@ namespace EmployeeManagement.Models
         TSgt,
         MSgt,
         SMSgt,
-        CMSgt
+        CMSgt,
+        Civilian
     }
 }
