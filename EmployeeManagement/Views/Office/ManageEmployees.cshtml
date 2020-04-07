@@ -14,20 +14,37 @@
         <div class="card-body">
             @for (int i = 0; i < Model.Count; i++)
             {
-            <div class="form-check m-1">
-                <input type="hidden" asp-for="@Model[i].EmployeeId" />
-                <input type="hidden" asp-for="@Model[i].CurrentOfficeId" />
-                <input type="hidden" asp-for="@Model[i].EmployeeOfficeId" />
-                <input asp-for="@Model[i].IsSelected" class="form-check-input" />
-                <label asp-for="@Model[i].IsSelected" class="form-check-label">
-                    @Model[i].EmployeeLastName, @Model[i].EmployeeFirstName
-                </label>
-            </div>
+                <div class="form-check m-1">
+                    <input type="hidden" asp-for="@Model[i].EmployeeId" />
+                    <input type="hidden" asp-for="@Model[i].CurrentOfficeId" />
+                    <input type="hidden" asp-for="@Model[i].EmployeeOfficeId" />
+                    <input asp-for="@Model[i].IsSelected" class="form-check-input" />
+                    <label asp-for="@Model[i].IsSelected" class="form-check-label">
+                        @Model[i].EmployeeLastName, @Model[i].EmployeeFirstName
+                    </label>
+                </div>
             }
         </div>
         <div class="card-footer">
-            <input type="submit" value="Update" class="btn btn-primary auto-width" />
+            <button type="button" class="btn btn-primary auto-width" data-toggle="modal" data-target="#updateModal">Update</button>
             <a class="btn btn-primary auto-width" asp-action="Details" asp-controller="Office" asp-route-id="@officeId">Cancel</a>
+        </div>
+    </div>
+
+    <div id="updateModal" class="modal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Attention!</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Adding an employee to this office will remove that employee from the office they currently belong to.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary m-1" data-dismiss="modal">Cancel</button>
+                    <input type="submit" value="Update" class="btn btn-primary auto-width" />
+                </div>
+            </div>
         </div>
     </div>
 </form>
