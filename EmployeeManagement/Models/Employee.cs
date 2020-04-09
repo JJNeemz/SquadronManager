@@ -24,7 +24,8 @@ namespace EmployeeManagement.Models
         public string PhotoPath { get; set; }
         public string OfficeId { get; set; }
         public Office Office { get; set; }
-        public Rank? Rank { get; set; }
+        [Required]
+        public Rank Rank { get; set; }
         public Afsc? Afsc { get; set; }
     }
 }

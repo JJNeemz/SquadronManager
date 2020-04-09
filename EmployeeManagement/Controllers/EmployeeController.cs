@@ -79,9 +79,22 @@ namespace EmployeeManagement.Controllers
 
 
         [AllowAnonymous]
-        public ViewResult Index()
+        public ViewResult Index(string sortType)
         {
+            sortType = String.IsNullOrEmpty(sortType) ? "lastName_asc" : sortType;
+
             var model = _employeeRepository.GetAllEmployee();
+            // Use switch statement so we can easily add or remove sort criteria
+            switch (sortType)
+            {
+                case "lastName_desc":
+                    model = model.OrderByDescending(e => e.LastName).ToList();
+                    break;
+                case "lastName_asc":
+                    model = model.OrderBy(e => e.LastName).ToList();
+                    break;
+            }
+
             return View(model);
         }
 
@@ -123,7 +136,8 @@ namespace EmployeeManagement.Controllers
                     Email = model.Email,
                     OfficeId = model.OfficeId,
                     PhotoPath = uniqueFileName,
-                    Afsc = model.Afsc
+                    Afsc = model.Afsc,
+                    Rank = model.Rank
                 };
 
                 _employeeRepository.Add(newEmployee);
@@ -162,7 +176,8 @@ namespace EmployeeManagement.Controllers
                 Afsc = employee.Afsc,
                 AfscDisplayName = GetEnumDisplayName(employee.Afsc),
                 PageTitle = "Employee Details",
-                OfficeName = officeName
+                OfficeName = officeName,
+                Rank = employee.Rank
             };
             return View(employeeDetailsViewModel);
         }
@@ -195,6 +210,7 @@ namespace EmployeeManagement.Controllers
                 OfficeId = employee.OfficeId,
                 OfficeList = officeList,
                 Afsc = employee.Afsc,
+                Rank = employee.Rank,
                 ExistingPhotoPath = employee.PhotoPath
 
             };
@@ -212,6 +228,7 @@ namespace EmployeeManagement.Controllers
                 employee.Email = model.Email;
                 employee.OfficeId = model.OfficeId;
                 employee.Afsc = model.Afsc;
+                employee.Rank = model.Rank;
                 if (model.Photo != null)
                 {
                     if (model.ExistingPhotoPath != null)

@@ -33,5 +33,6 @@ namespace EmployeeManagement.ViewModels
         public List<SelectListItem> OfficeList { get; set; }
         [Display(Name="Air Force Specialty Code")]
         public Afsc? Afsc { get; set; }
+        public Rank Rank { get; set; }
     }
 }

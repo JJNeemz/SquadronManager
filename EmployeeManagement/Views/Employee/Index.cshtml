@@ -4,6 +4,11 @@
     ViewBag.Title = "Employee List";
 }
 
+    <div id="sortOptions">
+        <span>Sort Order: </span>
+        <a asp-action="Index" asp-controller="Employee" asp-route-sortType="lastName_asc" class="btn btn-link auto-width m-1">Name Ascending</a>
+        <a asp-action="Index" asp-controller="Employee" asp-route-sortType="lastName_desc" class="btn btn-link auto-width m-1">Name Descending</a>
+    </div>
     <div class="card-deck">
         @foreach(Employee employee in Model)
         {

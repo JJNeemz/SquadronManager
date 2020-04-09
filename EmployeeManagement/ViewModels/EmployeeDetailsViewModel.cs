@@ -20,5 +20,6 @@ namespace EmployeeManagement.ViewModels
 
         // Create SelectListItem list to use for dropdown
         public List<SelectListItem> OfficeList { get; set; }
+        public Rank Rank { get; set; }
     }
 }
