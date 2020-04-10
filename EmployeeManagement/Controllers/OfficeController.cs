@@ -127,6 +127,15 @@ namespace EmployeeManagement.Controllers
             }
         }
 
+        [HttpPost]
+        public IActionResult Delete(string id)
+        {
+            _officeRepository.Delete(id);
+            var result = _officeRepository.GetAllOffices();
+            return RedirectToAction("index");
+        }
+
+
         [HttpGet]
         public IActionResult ManageEmployees(string officeId)
         {
