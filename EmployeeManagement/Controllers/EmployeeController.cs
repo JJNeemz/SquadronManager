@@ -87,11 +87,11 @@ namespace EmployeeManagement.Controllers
             // Use switch statement so we can easily add or remove sort criteria
             switch (sortType)
             {
-                case "lastName_desc":
-                    model = model.OrderByDescending(e => e.LastName).ToList();
-                    break;
                 case "lastName_asc":
                     model = model.OrderBy(e => e.LastName).ToList();
+                    break;
+                case "lastName_desc":
+                    model = model.OrderByDescending(e => e.LastName).ToList();
                     break;
             }
 

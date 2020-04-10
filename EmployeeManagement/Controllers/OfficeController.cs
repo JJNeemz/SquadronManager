@@ -27,9 +27,28 @@ namespace EmployeeManagement.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult Index(string sortType)
         {
+            sortType = String.IsNullOrEmpty(sortType) ? "name_asc" : sortType;
+
             var model = _officeRepository.GetAllOffices();
+            // Use switch statement so we can easily add or remove sort criteria
+            switch (sortType)
+            {
+                case "name_asc":
+                    model = model.OrderBy(o => o.Name).ToList();
+                    break;
+                case "name_desc":
+                    model = model.OrderByDescending(o => o.Name).ToList();
+                    break;
+                case "minimumManning_asc":
+                    model = model.OrderBy(o => o.MinimumManning).ToList();
+                    break;
+                case "minimumManning_desc":
+                    model = model.OrderByDescending(o => o.MinimumManning).ToList();
+                    break;
+            }
+
             return View(model);
         }
 

@@ -4,53 +4,53 @@
     ViewBag.Title = "Employee List";
 }
 
-    <div id="sortOptions">
-        <span>Sort Order: </span>
-        <a asp-action="Index" asp-controller="Employee" asp-route-sortType="lastName_asc" class="btn btn-link auto-width m-1">Name Ascending</a>
-        <a asp-action="Index" asp-controller="Employee" asp-route-sortType="lastName_desc" class="btn btn-link auto-width m-1">Name Descending</a>
-    </div>
-    <div class="card-deck">
-        @foreach(Employee employee in Model)
-        {
-            var photoPath = "~/Images/" + (employee.PhotoPath ?? "noimage.jpg");
+<div id="sortOptions">
+    <span>Sort Order: </span>
+    <a asp-action="Index" asp-controller="Employee" asp-route-sortType="lastName_asc" class="btn btn-link auto-width m-1">Name Ascending</a>
+    <a asp-action="Index" asp-controller="Employee" asp-route-sortType="lastName_desc" class="btn btn-link auto-width m-1">Name Descending</a>
+</div>
+<div class="card-deck">
+    @foreach(Employee employee in Model)
+    {
+        var photoPath = "~/Images/" + (employee.PhotoPath ?? "noimage.jpg");
 
-            <div class="card m-3" style="min-width: 18rem; max-width:30.5%;">
-                <div class="card-header">
-                    <h3>@employee.LastName, @employee.FirstName</h3>
-                </div>
-                <img class="card-img-top imageThumbnail" src="@photoPath" asp-append-version="true" />
-                <div class="card-footer text-center">
-                    <a asp-action="details" asp-controller="employee" asp-route-id="@employee.Id" class="btn btn-primary m-1">Details</a>
-                    <a asp-action="edit" asp-controller="employee" asp-route-id="@employee.Id" class="btn btn-primary m-1">Edit</a>
-                    @if(signInManager.IsSignedIn(User))
-                    {
-                        <button type="button" class="btn btn-danger m-1" data-toggle="modal" data-target="#deleteModal_@employee.Id">Delete</button>
-                    } else
-                    {
-                        <a asp-action="login" asp-controller="account" class="btn btn-danger m-1">Delete</a>
-                    }
-                </div>
+        <div class="card m-3" style="min-width: 18rem; max-width:30.5%;">
+            <div class="card-header">
+                <h3>@employee.LastName, @employee.FirstName</h3>
             </div>
+            <img class="card-img-top imageThumbnail" src="@photoPath" asp-append-version="true" />
+            <div class="card-footer text-center">
+                <a asp-action="details" asp-controller="employee" asp-route-id="@employee.Id" class="btn btn-primary m-1">Details</a>
+                <a asp-action="edit" asp-controller="employee" asp-route-id="@employee.Id" class="btn btn-primary m-1">Edit</a>
+                @if(signInManager.IsSignedIn(User))
+                {
+                    <button type="button" class="btn btn-danger m-1" data-toggle="modal" data-target="#deleteModal_@employee.Id">Delete</button>
+                } else
+                {
+                    <a asp-action="login" asp-controller="account" class="btn btn-danger m-1">Delete</a>
+                }
+            </div>
+        </div>
 
-            // Modal that appears when user clicks delete button
-            <div id="deleteModal_@employee.Id" class="modal" role="dialog">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title">Delete @employee.LastName, @employee.FirstName</h4>
-                        </div>
-                        <div class="modal-body">
-                            <p>Are you sure you want to delete @employee.LastName, @employee.FirstName?</p>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-primary m-1" data-dismiss="modal">Cancel</button>
-                            <form method="post" asp-action="delete" asp-controller="employee" asp-route-id="@employee.Id" class="m-1 auto-width d-inline">
-                                <button type="submit" class="btn btn-danger m-1">Delete</button>
-                            </form>
-                        </div>
+        // Modal that appears when user clicks delete button
+        <div id="deleteModal_@employee.Id" class="modal" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Delete @employee.LastName, @employee.FirstName</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure you want to delete @employee.LastName, @employee.FirstName?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary m-1" data-dismiss="modal">Cancel</button>
+                        <form method="post" asp-action="delete" asp-controller="employee" asp-route-id="@employee.Id" class="m-1 auto-width d-inline">
+                            <button type="submit" class="btn btn-danger m-1">Delete</button>
+                        </form>
                     </div>
                 </div>
             </div>
-        }
+        </div>
+    }
 
-    </div>
+</div>
