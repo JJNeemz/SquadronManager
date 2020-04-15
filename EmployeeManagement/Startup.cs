@@ -34,7 +34,7 @@ namespace EmployeeManagement
         {
 
             services.AddDbContextPool<AppDbContext>(options => 
-            options.UseSqlServer(_config.GetConnectionString("EmployeeDBConnection")));
+            options.UseSqlServer(_config.GetConnectionString("DefaultConnection")));
 
 
             services.AddIdentity<ApplicationUser, IdentityRole>(options =>

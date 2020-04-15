@@ -35,7 +35,7 @@
             </div>
             <img class="card-img-top imageThumbnail" src="@photoPath" asp-append-version="true" />
             <div class="card-footer text-center">
-                <a asp-action="details" asp-controller="employee" asp-route-id="@employee.Id" class="btn btn-primary m-1">Details</a>
+                <a asp-action="details" asp-controller="employee" asp-route-id="@employee.Id" class="btn btn-primary m-1 auto-width">Details</a>
                 <a asp-action="edit" asp-controller="employee" asp-route-id="@employee.Id" class="btn btn-primary m-1">Edit</a>
                 @if(signInManager.IsSignedIn(User))
                 {
