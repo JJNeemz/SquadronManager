@@ -1,0 +1,13 @@
+﻿.btn {
+    width: 75px;
+}
+
+.auto-width {
+    width: auto;
+}
+
+.imageThumbnail {
+    height: 200px;
+    width: auto;
+    object-fit: contain;
+}

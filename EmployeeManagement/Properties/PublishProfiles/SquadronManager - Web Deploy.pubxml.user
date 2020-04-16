@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+This file is used by the publish/package process of your Web project. You can customize the behavior of this process
+by editing this MSBuild file. In order to learn more about this please visit https://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAVldhefaKE06Yz+c1uZAirgAAAAACAAAAAAAQZgAAAAEAACAAAACX+z1fUN5TTNJm5Q2qU0X7tgf34Vl9Cu4E3M0Hukz/7gAAAAAOgAAAAAIAACAAAADsGTps+FoyS6FSP5eyRf6pz1LTNfelg5QedGcQ36Tbu4AAAAAR/kifJSLB8JAEwJqexMtdndUfELsblP8acgAUR26/OI8ZzJ0WimNcXq0vJH6c4NXEdHoSEYZuHu/LSFCk7BuUv+IO4Sk+XiqgYQ6/nu+antaXyhag/tdSsqRuChjjPHLmWE06utjB0yHGD+YQj+FrvKoPAV20NFQN9hGBn0bAm0AAAADcjr91dneztMMMju5H5u0/bKjLOW1jGhp/JIpdtoFB+MdcsT7xdTxxPLBVUy+iAO6QmzX7OlBZJXe6pOPYKsgt</EncryptedPassword>
+  </PropertyGroup>
+  <ItemGroup>
+    <DestinationConnectionStrings Include="DefaultConnection">
+      <Value>Data Source=tcp:squadronmanagerdbserver.database.windows.net,1433%3bInitial Catalog=SquadronManager_db%3bUser Id=JJNeemz%40squadronmanagerdbserver%3bPassword=1qaz%40WSX3edc%24RFV</Value>
+    </DestinationConnectionStrings>
+  </ItemGroup>
+  <ItemGroup>
+    <EFMigrations Include="EmployeeManagement.Models.AppDbContext">
+      <Value>Data Source=tcp:squadronmanagerdbserver.database.windows.net,1433%3bInitial Catalog=SquadronManager_db%3bUser Id=JJNeemz%40squadronmanagerdbserver%3bPassword=1qaz%40WSX3edc%24RFV</Value>
+    </EFMigrations>
+  </ItemGroup>
+</Project>
