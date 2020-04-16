@@ -4,6 +4,7 @@
     ViewBag.Title = "Office List";
 }
 
+<h4 class="mt-2">Offices : @ViewBag.OfficeCount</h4>
 <div id="sortOptions">
     <span>Sort By: </span>
     <a asp-action="Index" asp-controller="Office" asp-route-sortType="name_asc" class="btn btn-link auto-width m-1">

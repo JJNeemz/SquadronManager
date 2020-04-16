@@ -84,6 +84,7 @@ namespace EmployeeManagement.Controllers
             sortType = String.IsNullOrEmpty(sortType) ? "lastName_asc" : sortType;
 
             var model = _employeeRepository.GetAllEmployee();
+            ViewBag.EmployeeCount = model.Count();
             // Use switch statement so we can easily add or remove sort criteria
             switch (sortType)
             {

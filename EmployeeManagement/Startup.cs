@@ -32,9 +32,16 @@ namespace EmployeeManagement
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-
-            services.AddDbContextPool<AppDbContext>(options => 
-            options.UseSqlServer(_config.GetConnectionString("DefaultConnection")));
+            if(Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Production")
+            {
+                services.AddDbContextPool<AppDbContext>(options =>
+                    options.UseSqlServer(_config.GetConnectionString("DefaultConnection")));
+            }
+            else
+            {
+                services.AddDbContextPool<AppDbContext>(options =>
+                    options.UseSqlServer(_config.GetConnectionString("DefaultConnection")));
+            }
 
 
             services.AddIdentity<ApplicationUser, IdentityRole>(options =>

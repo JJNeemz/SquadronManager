@@ -24,7 +24,6 @@ namespace EmployeeManagement
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
-
                 })
                 .ConfigureLogging(logging =>
                 {

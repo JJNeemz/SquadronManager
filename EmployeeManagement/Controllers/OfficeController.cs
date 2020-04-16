@@ -32,6 +32,7 @@ namespace EmployeeManagement.Controllers
             sortType = String.IsNullOrEmpty(sortType) ? "name_asc" : sortType;
 
             var model = _officeRepository.GetAllOffices();
+            ViewBag.OfficeCount = model.Count();
             // Use switch statement so we can easily add or remove sort criteria
             switch (sortType)
             {
